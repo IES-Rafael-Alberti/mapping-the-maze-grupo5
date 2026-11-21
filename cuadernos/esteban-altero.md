@@ -101,10 +101,10 @@ Host is up.
 >
 >Esto podemos corroborarlo usando `tcpdump` para leer el tráfico generado:
 >Si usamos el comando por defecto `sudo nmap -sn 172.17.0.0/24 `
-![img](Pasted%20image%2020261111173435.png)
+![img](img/Pasted%20image%2020261111173435.png)
 >
 >Si especificamos que queremos usar paquetes ***ICMP*** y no tramas ***ARP*** con el comando `sudo nmap --disable-arp-ping -sn 172.17.0.0/24`
->![img](Pasted%20image%2020261111173702.png)
+>![img](img/Pasted%20image%2020261111173702.png)
 >
 >En esta ocasión obtenemos el mismo resultado. Pero es muy probable que en otros escenarios, usar *ICMP* no nos muestre los mismos resultados que *ARP*.
 ### Formateo de IPs
@@ -256,10 +256,10 @@ vsftpd 2.3.4 - Backdoor Command Execution                 | unix/remote/49757.py
 vsftpd 2.3.4 - Backdoor Command Execution (Metasploit)    | unix/remote/17491.rb
 ```
 
-![img](vsftpd%20_2.3.4_cve.png)
+![img](img/vsftpd%20_2.3.4_cve.png)
 
 ###### [`CVE-2011-2523`](https://nvd.nist.gov/vuln/detail/cve-2011-2523)
-![img](vsftpd_2.3.4_cvss.png)
+![img](img/vsftpd_2.3.4_cvss.png)
 
 >[!note]
 >Esta vulnerabilidad consiste en un <span title="Un backdoor (o puerta trasera) es un método oculto para acceder a un sistema informático saltándose los mecanismos de seguridad normales (contraseñas, autenticación, cifrado). Puede ser intencional (lo deja el propio desarrollador, por ejemplo para mantenimiento) o malicioso (lo instala un atacante tras explotar una vulnerabilidad)."><b><i>backdoor</i></b></span> con el que tras conectarse de forma inicial al servidor FTP e introduciendo cualquier usuario que termine con los caracteres `:)` y cualquier contraseña, se abre el puerto `6200` de la máquina esperando una conexión remota para una sesión como usuario ***superadministrador***.
@@ -274,11 +274,11 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![img](apache_httpd_2.4.58_sin_cve.png)
+![img](img/apache_httpd_2.4.58_sin_cve.png)
 
-![img](apace_2.4.58_cves.png)
+![img](img/apace_2.4.58_cves.png)
 ###### [`CVE-2023-38709`](https://nvd.nist.gov/vuln/detail/cve-2023-38709)
-![img](CVE-2023-38709.png)
+![img](img/CVE-2023-38709.png)
 
 >[!note]
 >La vulnerabilidad `CVE-2023-38709` afecta a todas las versiones de Apache HTTP Server hasta la `2.4.58` ***inclusive***.
@@ -290,7 +290,7 @@ Cuando nos conectamos al servidor web en el puerto `80`, encontramos la web por 
 ##### FTP
 Si tratamos de acceder como el usuario `anonymous` sin contraseña se nos devuelve el siguiente error:
 
-![img](172.17.0.3_ftp_anonymous.png)
+![img](img/172.17.0.3_ftp_anonymous.png)
 
 El error mostrado nos indica que el usuario `anonymous` ***si está habilitado*** en el servidor, pero el servicio se encuentra mal configurado.
 
@@ -317,36 +317,36 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![OpenSSH](openssh_7.9p1_sin_cve.png)
+![OpenSSH](img/openssh_7.9p1_sin_cve.png)
 
 >No se identifican vulnerabilidades conocidas.
 ##### `Apache Jserv (Protocol v1.3)`
 
-![ajp](ajp_cves.png)
+![ajp](img/ajp_cves.png)
 
 ##### [`CVE-2020-1938`](https://nvd.nist.gov/vuln/detail/cve-2020-1938)
 
-![cve](cve-2020-1938.png)
+![cve](img/cve-2020-1938.png)
 
 >[!note]
 >El servidor Apache Tomcat (v `9.0.30`) cuenta con un canal de comunicación interno (puerto `8009 (JSP)`), diseñado originalmente para que distintos servidores de la empresa intercambien información entre sí de forma rápida. El fallo radica en que este canal se encuentra expuesto a la red y acepta peticiones sin exigir autenticación, lo que permite que un atacante externo se haga pasar por un servidor interno de confianza.
 ##### `Apache Tomcat 9.0.30`
 
-![tomcat](apache_tomcat_9.0.30_cves.png)
+![tomcat](img/apache_tomcat_9.0.30_cves.png)
 ##### [`CVE-2022-34305`](https://nvd.nist.gov/vuln/detail/cve-2022-34305)
 
-![cve](cve-2022-34305.png)
+![cve](img/cve-2022-34305.png)
 
 >Vulnerabilidad de severidad media clasificada como **CWE-79: Cross-Site Scripting** en la aplicación de demostración que viene instalada por defecto en Apache Tomcat (afectando a la versión 9.0.30 y otras ramas). En concreto, uno de los formularios de ejemplo muestra en pantalla los datos introducidos por el usuario sin validarlos ni filtrarlos previamente. Esto permite que un atacante diseñe un enlace malicioso capaz de ejecutar código no autorizado directamente en el navegador de la persona que lo abra.
 ##### [`CVE-2020-1935`](https://nvd.nist.gov/vuln/detail/cve-2020-1935)
 
-![img](cve-2020-1935.png)
+![img](img/cve-2020-1935.png)
 
 >[!note]
 >El fallo ocurre porque el servidor es demasiado permisivo al leer ciertas instrucciones internas de las peticiones web, aceptando como válidos mensajes que tienen un formato incorrecto. Si el servidor opera detrás de un sistema intermediario (como un balanceador de carga o un proxy inverso) que interprete esos mismos mensajes de forma distinta, se produce una desincronización conocida como _HTTP Request Smuggling_ (contrabando de peticiones).
 ##### [`CVE-2019-17569`](https://nvd.nist.gov/vuln/detail/cve-2019-17569)
 
-![img](CVE-2019-17569.png)
+![img](img/CVE-2019-17569.png)
 
 >[!note]
 >Este fallo provoca que Tomcat procese de forma incorrecta ciertas peticiones web que contienen etiquetas de formato inválidas, en lugar de rechazarlas. Cuando el servidor trabaja detrás de un sistema intermediario (como un proxy inverso o balanceador de carga) que interpreta ese mismo error de forma diferente, se abre la puerta a un ataque de _HTTP Request Smuggling_ (contrabando de peticiones).
@@ -377,7 +377,7 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![img](apache_httpd_2.4.59_sin_cve.png)
+![img](img/apache_httpd_2.4.59_sin_cve.png)
 ##### `Jetty 9.4.39.v20210325`
 
 ```bash
@@ -388,10 +388,10 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![img](jetty_9.4.39_sin_cve.png)
+![img](img/jetty_9.4.39_sin_cve.png)
 ##### `ActiveMQ OpenWire transport 5.15.15`
 
-![img](ActveMQ_5.15.15_sin_cve.png)
+![img](img/ActveMQ_5.15.15_sin_cve.png)
 #### Reconocimiento manual
 ##### HTTP (80)
 Al acceder al servidor en el puerto `80` encontramos la página por defecto para las máquinas Debian. Al no poder realizar técnicas intrusivas, se desconoce la existencia de *endpoints* ocultos pero accesibles de forma pública.
@@ -410,7 +410,7 @@ Se han analizado las posibles vulnerabilidades de las dependencias de la aplicac
 ##### HTTP (8161)
 Al tratar de acceder, se nos muestra un cuadro de diálogo de ***Autenticación HTTP*** (*HTTP Authentication*), seguramente por ***Autenticación Básica HTTP***.
 
-![img](http_authentication.png)
+![img](img/http_authentication.png)
 
 En las cabeceras de respuestas del servicio encontramos que el servidor que usa es ***Jetty 9.4.39.v20210325)***.
 
@@ -454,7 +454,7 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![img](openssh_9.2p1_sin_cve.png)
+![img](img/openssh_9.2p1_sin_cve.png)
 ##### `Jetty 10.0.18`
 
 ```bash
@@ -465,7 +465,7 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![img](jetty_10.0.18_sin_cve.png)
+![img](img/jetty_10.0.18_sin_cve.png)
 #### Reconocimiento manual
 ##### HTTP (8080)
 Al conectarnos al servidor web Jetty, nos encontramos con un panel de Login de ***Jenkins***. Se detectó la versión `2.441` de ***Jenkins***, y se buscaron vulnerabilidades conocidas:
@@ -477,15 +477,15 @@ searchsploit jenkins 2.441
 Jenkins 2.441 - Local File Inclusion     | java/webapps/51993.py
 ```
 
-![img](jenkins_2.441_cve.png)
+![img](img/jenkins_2.441_cve.png)
 ###### [`CVE-2024-23897`](https://nvd.nist.gov/vuln/detail/cve-2024-23897)
 
-![img](CVE-2024-23897.png)
+![img](img/CVE-2024-23897.png)
 
 >[!note]
 >El fallo reside en la forma en que su interfaz de línea de comandos (CLI) interpreta los argumentos enviados en una petición: al utilizar una librería interna con una función de expansión de argumentos (`args4j`), el sistema reemplaza ciertos caracteres especiales (como `@` seguido de una ruta de archivo) por el contenido real de archivos locales en el servidor donde se ejecuta Jenkins.
 ###### [`CVE-2024-23898`](https://nvd.nist.gov/vuln/detail/cve-2024-23898)
-![img](CVE-2024-23898.png)
+![img](img/CVE-2024-23898.png)
 
 >[!note]
 >El fallo ocurre en el canal de comunicación en tiempo real (WebSocket) que utiliza su interfaz de línea de comandos (CLI), ya que el servidor no comprueba adecuadamente desde qué sitio web se origina la conexión. Como consecuencia, si un usuario que tiene sesión iniciada en Jenkins visita una página web maliciosa, esa página puede abrir una conexión en su nombre y enviar órdenes a Jenkins aprovechando su sesión activa (_Cross-Site WebSocket Hijacking_).
@@ -510,14 +510,14 @@ OpenSSH 2.3 < 7.7 - Username Enumeration (PoC)    | linux/remote/45210.py
 OpenSSH < 7.7 - User Enumeration (2)              | linux/remote/45939.py
 ```
 
-![img](openssh_7.7_cves.png)
+![img](img/openssh_7.7_cves.png)
 ###### [`CVE-2019-16905`](https://nvd.nist.gov/vuln/detail/cve-2019-16905)
-![img](Pasted_image_20261121191218.png)
+![img](img/Pasted_image_20261121191218.png)
 
 >[!note]
 >El fallo ocurre en el algoritmo encargado de procesar un tipo de clave criptográfica experimental (**XMSS**): al analizar una clave manipulada, se produce un desbordamiento numérico que provoca corrupción de memoria. Es importante destacar que esta función es experimental y no viene habilitada de forma estándar en las compilaciones habituales de OpenSSH.
 ###### [`CVE-2018-15473`](https://nvd.nist.gov/vuln/detail/CVE-2018-15473)
-![img](Pasted_image_20261121191417.png)
+![img](img/Pasted_image_20261121191417.png)
 
 >[!note]
 >El fallo reside en la forma en que el servidor gestiona las peticiones de autenticación de usuarios: al comprobar si un nombre de usuario existe, el sistema responde de manera ligeramente distinta dependiendo de si la cuenta es válida o no (por ejemplo, devolviendo mensajes o respuestas diferentes ante solicitudes de autenticación malformadas). Esto permite que un atacante externo pueda verificar de forma remota qué usuarios existen en el servidor sin necesidad de conocer sus contraseñas (_User Enumeration_).
@@ -545,7 +545,7 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![img](Pasted_image_20261121192308.png)
+![img](img/Pasted_image_20261121192308.png)
 
 >Todas las vulnerabilidades se solucionan en la versión `9.6`. Por lo que el servicio no se ve afectado por ellas.
 ##### `Apache httpd 2.4.58`
@@ -558,11 +558,11 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![img](apache_httpd_2.4.58_sin_cve.png)
+![img](img/apache_httpd_2.4.58_sin_cve.png)
 
-![img](apace_2.4.58_cves.png)
+![img](img/apace_2.4.58_cves.png)
 ###### [`CVE-2023-38709`](https://nvd.nist.gov/vuln/detail/cve-2023-38709)
-![img](CVE-2023-38709.png)
+![img](img/CVE-2023-38709.png)
 
 >[!note]
 >La vulnerabilidad `CVE-2023-38709` afecta a todas las versiones de Apache HTTP Server hasta la `2.4.58` ***inclusive***.
@@ -570,45 +570,45 @@ Shellcodes: No Results
 >La vulnerabilidad radica en que el servidor no valida correctamente ciertos datos internos antes de enviarlos, lo que permite que un atacante manipule la estructura de la comunicación y logre dividir una respuesta legítima en dos, introduciendo contenido no autorizado.
 ##### `Samba smbd 4`
 
-![img](Pasted_image_20261121202305.png)
+![img](img/Pasted_image_20261121202305.png)
 ###### [`[CVE-2021-44142`](https://nvd.nist.gov/vuln/detail/CVE-2021-44142)
-![img](Pasted_image_20261121203945.png)
+![img](img/Pasted_image_20261121203945.png)
 
 >[!note]
 >El fallo afecta específicamente al módulo `vfs_fruit` (empleado para mejorar la compatibilidad con equipos Apple) cuando procesa metadatos o atributos extendidos al abrir archivos. Si el módulo está habilitado y un usuario con permisos de escritura sobre atributos extendidos envía datos manipulados, puede provocar corrupción de memoria.
 ###### [`CVE-2019-14907`](https://nvd.nist.gov/vuln/detail/CVE-2019-14907)
-![img](Pasted_image_20261121210316.png)
+![img](img/Pasted_image_20261121210316.png)
 
 >[!note]
 >El fallo ocurre cuando el servidor está configurado con un nivel de registro (`log level`) igual o superior a 3 y al procesar cadenas de texto enviadas por el cliente durante el intercambio de autenticación NTLMSSP que provocan un fallo de conversión de caracteres. Al intentar registrar o imprimir dicha cadena tras el error de conversión, se produce una lectura fuera de límites de memoria que puede provocar la caída de procesos de larga duración, como el servidor RPC en un controlador de dominio de Active Directory con Samba.
 ###### [`CVE-2017-9461`](https://nvd.nist.gov/vuln/detail/CVE-2017-9461)
-![img](Pasted_image_20261121210731.png)
+![img](img/Pasted_image_20261121210731.png)
 
 >[!note]
 >El fallo ocurre en el proceso `smbd` (función `fd_open_atomic`) al gestionar de forma incorrecta enlaces simbólicos rotos (_dangling symlinks_) cuando se intenta abrir un archivo con la bandera `O_CREAT`. Un cliente autenticado con acceso al recurso compartido puede provocar que el demonio entre en un bucle infinito, disparando el consumo de CPU y memoria y degradando o interrumpiendo la disponibilidad del servicio.
 ###### [`CVE-2015-7560`](https://nvd.nist.gov/vuln/detail/CVE-2015-7560)
-![img](Pasted_image_20261121210945.png)
+![img](img/Pasted_image_20261121210945.png)
 
 >[!note]
 >El fallo reside en la implementación del protocolo SMB1 en el demonio `smbd`: un usuario remoto autenticado puede crear un enlace simbólico (_symlink_) mediante una llamada UNIX de SMB1 y, posteriormente, utilizar una llamada no UNIX de SMB1 para sobrescribir la ACL del archivo o directorio de destino al que apunta dicho enlace, logrando alterar permisos o eludir restricciones de acceso sobre recursos arbitrarios.
 ###### [`CVE-2015-5252`](https://nvd.nist.gov/vuln/detail/CVE-2015-5252)
-![img](Pasted_image_20261121213240.png)
+![img](img/Pasted_image_20261121213240.png)
 
 >[!note]
 >El fallo reside en la gestión de rutas del demonio `smbd` (`vfs.c`), que no valida de forma adecuada los enlaces simbólicos (_symlinks_) cuando existen recursos compartidos con ciertas relaciones de subcadenas en sus nombres o rutas. Esto permite que un atacante remoto aproveche un enlace simbólico para eludir las restricciones de acceso y leer o manipular archivos ubicados fuera del directorio del recurso compartido.
 
 ###### [`CVE-2015-0240`](https://nvd.nist.gov/vuln/detail/CVE-2015-0240)
-![img](Pasted_image_20261121222210.png)
+![img](img/Pasted_image_20261121222210.png)
 
 >[!note]
 >El fallo reside en la función `_netr_ServerPasswordSet` del servicio Netlogon dentro del demonio `smbd`: al procesar una petición RPC especialmente manipulada, el servidor intenta liberar memoria (`free()`) utilizando un puntero de la pila que no ha sido inicializado previamente. Esto permite que un atacante remoto, sin necesidad de autenticarse, corrompa la memoria del proceso y logre ejecutar código arbitrario con privilegios de `root` o provocar la caída del servicio.
 ###### [`CVE-2014-3493`](https://nvd.nist.gov/vuln/detail/CVE-2014-3493)
-![img](Pasted_image_20261121222525.png)
+![img](img/Pasted_image_20261121222525.png)
 
 >[!note]
 >El fallo reside en la función `push_ascii` del demonio `smbd`: cuando un usuario remoto autenticado intenta leer una ruta de archivo en formato Unicode sin especificar el uso de Unicode en su petición, se produce un error en la conversión del juego de caracteres que desencadena una desreferencia de puntero no válido, provocando corrupción de memoria y la caída del servicio.
 ###### [`CVE-2013-4124`](https://nvd.nist.gov/vuln/detail/CVE-2013-4124)
-![img](Pasted_image_20261121222729.png)
+![img](img/Pasted_image_20261121222729.png)
 
 >[!note]
 >El fallo reside en la función `read_nttrans_ea_list` del demonio `smbd` (`nttrans.c`): al procesar una lista de atributos extendidos (_Extended Attributes_) especialmente manipulada dentro de una petición SMB, se produce un desbordamiento de enteros. Esto permite que un atacante remoto provoque un consumo excesivo de memoria y CPU, derivando en la caída o inoperatividad del servicio.
@@ -623,7 +623,7 @@ Cuando vemos el contenido compartido de forma pública, vemos lo siguiente:
 smbclient -L //172.17.0.8 -N
 ```
 
-![img](samba.png)
+![img](img/samba.png)
 
 El listado muestra cuatro recursos expuestos por el servidor Samba, tres de tipo disco y uno administrativo:
 - `myshare` **(Disk - Carpeta compartida sin restricciones)**
@@ -707,7 +707,7 @@ La salida confirma una ***política de contraseñas débil*** expuesta de forma 
 nmap -Pn -n -p 445 --script smb-protocols,smb-security-mode,smb2-security-mode,smb2-capabilities 172.17.0.8
 ```
 
-![img](nmap_smb.png)
+![img](img/nmap_smb.png)
 
 - `smb-protocols`: El servidor no acepta SMBv1.
 - `smb2-security-mode` (`Message signing enabled but not required`): Permite ataques *SMB Relay* o *Man-in-the-Middle* en la red local.
@@ -742,14 +742,14 @@ done
 ```
 
 Ahora tenemos 5 archivos con información de los 5 usuarios del sistema.
-![img](Pasted_image_20261122001427.png)
+![img](img/Pasted_image_20261122001427.png)
 ###### Metadatos extendidos de los recursos compartidos
 ```bash
 # rpcclient · Metadatos extendidos de recursos compartidos --> 2026-11-22 0:17
 rpcclient -N -U '' 172.17.0.8 -c 'netshareenum; netshareenumall'
 ```
 
-![img](Pasted_image_20261122001947.png)
+![img](img/Pasted_image_20261122001947.png)
 
 >[!warning]
 >El servidor está exponiendo de forma anónima las **rutas internas reales del sistema de archivos Linux** asociadas a cada recurso compartido.
@@ -758,7 +758,7 @@ rpcclient -N -U '' 172.17.0.8 -c 'netshareenum; netshareenumall'
 >- **`home`** (_Produccion_) → **`/var/www/html`**
 >- **`IPC$`** (_IPC Service (EseEmeB Samba Server)_) → `/tmp`
 ##### Netbios (139)
-![img](Pasted_image_20261122002712.png)
+![img](img/Pasted_image_20261122002712.png)
 
 >El puerto `139` abierto junto al `445` en un servidor moderno representa normalmente una superficie de ataque innecesaria.
 
@@ -782,5 +782,5 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![img](openssh_9.2p1_sin_cve.png)
+![img](img/openssh_9.2p1_sin_cve.png)
 ##### `Apache httpd 2.4.68`
