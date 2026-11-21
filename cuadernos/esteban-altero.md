@@ -101,10 +101,10 @@ Host is up.
 >
 >Esto podemos corroborarlo usando `tcpdump` para leer el tráfico generado:
 >Si usamos el comando por defecto `sudo nmap -sn 172.17.0.0/24 `
-![[Pasted image 20261111173435.png]]
+![img](Pasted%20image%2020261111173435.png)
 >
 >Si especificamos que queremos usar paquetes ***ICMP*** y no tramas ***ARP*** con el comando `sudo nmap --disable-arp-ping -sn 172.17.0.0/24`
->![[Pasted image 20261111173702.png]]
+>![img](Pasted%20image%2020261111173702.png)
 >
 >En esta ocasión obtenemos el mismo resultado. Pero es muy probable que en otros escenarios, usar *ICMP* no nos muestre los mismos resultados que *ARP*.
 ### Formateo de IPs
@@ -256,10 +256,10 @@ vsftpd 2.3.4 - Backdoor Command Execution                 | unix/remote/49757.py
 vsftpd 2.3.4 - Backdoor Command Execution (Metasploit)    | unix/remote/17491.rb
 ```
 
-![[vsftpd _2.3.4_cve.png]]
+![img](vsftpd%20_2.3.4_cve.png)
 
 ###### [`CVE-2011-2523`](https://nvd.nist.gov/vuln/detail/cve-2011-2523)
-![[vsftpd_2.3.4_cvss.png]]
+![img](vsftpd_2.3.4_cvss.png)
 
 >[!note]
 >Esta vulnerabilidad consiste en un <span title="Un backdoor (o puerta trasera) es un método oculto para acceder a un sistema informático saltándose los mecanismos de seguridad normales (contraseñas, autenticación, cifrado). Puede ser intencional (lo deja el propio desarrollador, por ejemplo para mantenimiento) o malicioso (lo instala un atacante tras explotar una vulnerabilidad)."><b><i>backdoor</i></b></span> con el que tras conectarse de forma inicial al servidor FTP e introduciendo cualquier usuario que termine con los caracteres `:)` y cualquier contraseña, se abre el puerto `6200` de la máquina esperando una conexión remota para una sesión como usuario ***superadministrador***.
@@ -274,11 +274,11 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![[apache_httpd_2.4.58_sin_cve.png]]
+![img](apache_httpd_2.4.58_sin_cve.png)
 
-![[apace_2.4.58_cves.png]]
+![img](apace_2.4.58_cves.png)
 ###### [`CVE-2023-38709`](https://nvd.nist.gov/vuln/detail/cve-2023-38709)
-![[CVE-2023-38709.png]]
+![img](CVE-2023-38709.png)
 
 >[!note]
 >La vulnerabilidad `CVE-2023-38709` afecta a todas las versiones de Apache HTTP Server hasta la `2.4.58` ***inclusive***.
@@ -290,7 +290,7 @@ Cuando nos conectamos al servidor web en el puerto `80`, encontramos la web por 
 ##### FTP
 Si tratamos de acceder como el usuario `anonymous` sin contraseña se nos devuelve el siguiente error:
 
-![[172.17.0.3_ftp_anonymous.png]]
+![img](172.17.0.3_ftp_anonymous.png)
 
 El error mostrado nos indica que el usuario `anonymous` ***si está habilitado*** en el servidor, pero el servicio se encuentra mal configurado.
 
@@ -558,11 +558,11 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![[apache_httpd_2.4.58_sin_cve.png]]
+![img](apache_httpd_2.4.58_sin_cve.png)
 
-![[apace_2.4.58_cves.png]]
+![img](apace_2.4.58_cves.png)
 ###### [`CVE-2023-38709`](https://nvd.nist.gov/vuln/detail/cve-2023-38709)
-![[CVE-2023-38709.png]]
+![img](CVE-2023-38709.png)
 
 >[!note]
 >La vulnerabilidad `CVE-2023-38709` afecta a todas las versiones de Apache HTTP Server hasta la `2.4.58` ***inclusive***.
@@ -742,7 +742,7 @@ done
 ```
 
 Ahora tenemos 5 archivos con información de los 5 usuarios del sistema.
-![[Pasted_image_20261122001427.png]]
+![img](Pasted_image_20261122001427.png)
 ###### Metadatos extendidos de los recursos compartidos
 ```bash
 # rpcclient · Metadatos extendidos de recursos compartidos --> 2026-11-22 0:17
@@ -758,7 +758,7 @@ rpcclient -N -U '' 172.17.0.8 -c 'netshareenum; netshareenumall'
 >- **`home`** (_Produccion_) → **`/var/www/html`**
 >- **`IPC$`** (_IPC Service (EseEmeB Samba Server)_) → `/tmp`
 ##### Netbios (139)
-![[Pasted_image_20261122002712.png]]
+![img](Pasted_image_20261122002712.png)
 
 >El puerto `139` abierto junto al `445` en un servidor moderno representa normalmente una superficie de ataque innecesaria.
 
