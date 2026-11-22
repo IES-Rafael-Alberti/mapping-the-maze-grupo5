@@ -793,7 +793,7 @@ Exploits: No Results
 Shellcodes: No Results
 ```
 
-![img](../img/apache_httpd_2.4.68_cve.png])
+![img](../img/apache_httpd_2.4.68_cve.png)
 
 >La única vulnerabilidad se soluciona en la versión `2.4.68`. Por lo que no nos afecta.
 #### Reconocimiento manual
