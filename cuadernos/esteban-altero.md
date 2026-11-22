@@ -389,7 +389,7 @@ Shellcodes: No Results
 ![img](../img/ActveMQ_5.15.15_sin_cve.png)
 
 Buscando mas profundamente encontré esta vulnerabilidad crítica:
-![img](cve_activeMQ.png)
+![img](../img/cve_activeMQ.png)
 
 >[!note]
 >Ejecución remota de código (RCE) crítica mediante deserialización/instanciación arbitraria de clases en el protocolo OpenWire.
