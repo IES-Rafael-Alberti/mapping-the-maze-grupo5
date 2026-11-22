@@ -784,3 +784,92 @@ Shellcodes: No Results
 
 ![img](../img/openssh_9.2p1_sin_cve.png)
 ##### `Apache httpd 2.4.68`
+
+```bash
+# SearchSploit --> 2026-11-22 12:39
+searchsploit apache httpd 2.4.68
+
+Exploits: No Results
+Shellcodes: No Results
+```
+
+![img](../img/apache_httpd_2.4.68_cve.png])
+
+>La única vulnerabilidad se soluciona en la versión `2.4.68`. Por lo que no nos afecta.
+#### Reconocimiento manual
+##### HTTP (80)
+```bash
+# whatweb --> 2026-11-22 12:59
+whatweb http://172.17.0.9
+
+http://172.17.0.9 [200 OK] Apache[2.4.68], Country[RESERVED][ZZ], HTML5, HTTPServer[Debian Linux][Apach/2.4.68 (Debian)], IP[172.17.0.9], Title[test page]
+```
+
+Encontramos una aplicación web bajo desarrollo, la cual no nos da muchas pistas. Encontramos un panel de "*Login*" que muestra el *endpoint* `login.php` encargado de procesar las credenciales. Ni el código fuente HTML ni las hojas de estilo CSS filtran algún tipo de información sensible.
+
+---
+### `172.17.0.10`
+
+```
+PORT   STATE SERVICE VERSION
+80/tcp open  http    SimpleHTTPServer 0.6 (Python 3.11.2)
+MAC Address: 12:4F:2B:31:4F:86 (Unknown)
+```
+#### CVE
+##### `SimpleHTTPServer 0.6 (Python 3.11.2)`
+
+```bash
+# SearchSploit --> 2026-11-22 13:25
+searchsploit simplehttpserver 0.6
+
+Exploits: No Results
+Shellcodes: No Results
+```
+
+![img](../img/sin_cve_simplehttpserver_0.6.png)
+
+![img](../img/cve_python_3.11.2.png)
+###### [`CVE-2019-25781`](https://nvd.nist.gov/vuln/detail/CVE-2019-25781)
+![img](../img/Pasted_image_20261122132924.png)
+
+>[!note]
+>El fallo reside en el análisis de enlaces en línea dentro de los métodos `LinkInlineProcessor.getText()` y `getLink()`: cuando un atacante remoto envía texto Markdown corto que contiene secuencias repetidas de corchetes sin cerrar (`[` o `![`), el analizador se ve forzado a realizar escaneos de complejidad cuadrática. Esto provoca un consumo excesivo de CPU que mantiene bloqueados los procesos (_workers_) durante minutos, pudiendo degradar el rendimiento del servidor o dejar el servicio completamente inaccesible.
+#### Reconocimiento manual
+##### `SimpleHTTPServer 0.6 (80)`
+```bash
+# whatweb --> 2026-11-22 13:33
+whatweb http://172.17.0.10
+
+http://172.17.0.10 [200 OK] Country[RESERVED][ZZ], HTML5, HTTPServer[SimpleHTTP/0.6 Python/3.11.2], IP[172.17.0.10], Python[3.11.2], Title[CTG · IPMI bajo exposición
+```
+
+Cuando vemos la web descubrimos que es un laboratorio de pruebas para un estándar de gestión remota de servidores denominada `IPMI (Intelligent Paltform Managment Interface)`. Nos muestra el puertos sobre el que corre (`623/UDP`) y conceptos como `BMC (Baseboard Managment Controller)` o `SOL (Serial Over LAN)`. Además, se nos muestra una vulnerabilidad `CVE-2013-4786`.
+
+![img](../img/Pasted_image_20261122134802.png)
+
+>[!note]
+>Durante el inicio de sesión contra el controlador de gestión de placa base (_BMC_), el protocolo incluye el hash (HMAC) derivado de la contraseña del usuario en la respuesta _RAKP Message 2_. Esto permite a un atacante remoto solicitar y capturar dichos hashes sin necesidad de autenticarse previamente, para después realizar ataques de fuerza bruta o diccionario de forma _offline_ con el objetivo de obtener las contraseñas en texto claro y comprometer el control administrativo del hardware del servidor.
+##### `IPMI (623/UDP`
+```bash
+# nmap · Identificación de versión --> 2026-11-22 13:53
+sudo nmap -Pn -n -sU --script ipmi-version -p623 172.17.0.10
+
+PORT    STATE SERVICE
+623/udp open  asf-rmcp
+| ipmi-version:
+|   Version:
+|     IPMI-2.0
+|   UserAuth: password, md5, md2, null
+|   PassAuth: auth_msg, auth_user, non_null_user
+|_  Level: 1.5, 2.0
+MAC Address: 12:4F:2B:31:4F:86 (Unknown)
+```
+###### Exposición al fallo de IPMI 2.0 (`CVE-2013-4786`)
+- **Evidencia:** El servicio anuncia soporte para `IPMI-2.0` (`Level: 1.5, 2.0`).
+- **Riesgo:** Al estar activo IPMI 2.0 y ser accesible por red, el controlador BMC es vulnerable por diseño a la obtención de hashes HMAC mediante _RAKP Message 2_ (**CVE-2013-4786**), lo que permite ataques de fuerza bruta _offline_ contra las contraseñas administrativas.
+###### Compatibilidad con protocolo heredado (IPMI 1.5)
+- **Evidencia:** El campo `Level` incluye la versión **`1.5`**.
+- **Riesgo:** IPMI 1.5 es un protocolo obsoleto que carece de cifrado moderno y presenta graves debilidades de autenticación.
+###### Métodos de autenticación débiles habilitados
+- **Evidencia:** En `UserAuth` el servidor anuncia soporte para **`password`**, **`md5`**, **`md2`** y **`null`**.
+- **Riesgo:** Permitir autenticación en texto plano (`password`), algoritmos criptográficos rotos (`md2`, `md5`) o sesiones sin autenticación (`null`) debilita gravemente el control de acceso al hardware. (Aunque `PassAuth` indica `non_null_user` —es decir, que existen cuentas con nombre de usuario definido—, mantener habilitados estos métodos en el servicio supone una mala práctica de endurecimiento).
