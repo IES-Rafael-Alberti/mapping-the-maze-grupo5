@@ -387,6 +387,13 @@ Shellcodes: No Results
 ##### `ActiveMQ OpenWire transport 5.15.15`
 
 ![img](../img/ActveMQ_5.15.15_sin_cve.png)
+
+Buscando mas profundamente encontré esta vulnerabilidad crítica:
+![img](cve_activeMQ.png)
+
+>[!note]
+>Ejecución remota de código (RCE) crítica mediante deserialización/instanciación arbitraria de clases en el protocolo OpenWire.
+
 #### Reconocimiento manual
 ##### HTTP (80)
 Al acceder al servidor en el puerto `80` encontramos la página por defecto para las máquinas Debian. Al no poder realizar técnicas intrusivas, se desconoce la existencia de *endpoints* ocultos pero accesibles de forma pública.
