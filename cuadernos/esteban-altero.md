@@ -566,47 +566,9 @@ Shellcodes: No Results
 ##### `Samba smbd 4`
 
 ![img](../img/Pasted_image_20261121202305.png)
-###### [`[CVE-2021-44142`](https://nvd.nist.gov/vuln/detail/CVE-2021-44142)
-![img](../img/Pasted_image_20261121203945.png)
 
->[!note]
->El fallo afecta específicamente al módulo `vfs_fruit` (empleado para mejorar la compatibilidad con equipos Apple) cuando procesa metadatos o atributos extendidos al abrir archivos. Si el módulo está habilitado y un usuario con permisos de escritura sobre atributos extendidos envía datos manipulados, puede provocar corrupción de memoria.
-###### [`CVE-2019-14907`](https://nvd.nist.gov/vuln/detail/CVE-2019-14907)
-![img](../img/Pasted_image_20261121210316.png)
+>El servicio `OpenSSH` delata que el Sistema operativo es ***Ubuntu 24.04 LTS***, que distribuye Samba *4.19.x* con parches de seguridad mantenidos. Por lo que el sistema no se ve afectado por ninguna de estas vulnerabilidades. 
 
->[!note]
->El fallo ocurre cuando el servidor está configurado con un nivel de registro (`log level`) igual o superior a 3 y al procesar cadenas de texto enviadas por el cliente durante el intercambio de autenticación NTLMSSP que provocan un fallo de conversión de caracteres. Al intentar registrar o imprimir dicha cadena tras el error de conversión, se produce una lectura fuera de límites de memoria que puede provocar la caída de procesos de larga duración, como el servidor RPC en un controlador de dominio de Active Directory con Samba.
-###### [`CVE-2017-9461`](https://nvd.nist.gov/vuln/detail/CVE-2017-9461)
-![img](../img/Pasted_image_20261121210731.png)
-
->[!note]
->El fallo ocurre en el proceso `smbd` (función `fd_open_atomic`) al gestionar de forma incorrecta enlaces simbólicos rotos (_dangling symlinks_) cuando se intenta abrir un archivo con la bandera `O_CREAT`. Un cliente autenticado con acceso al recurso compartido puede provocar que el demonio entre en un bucle infinito, disparando el consumo de CPU y memoria y degradando o interrumpiendo la disponibilidad del servicio.
-###### [`CVE-2015-7560`](https://nvd.nist.gov/vuln/detail/CVE-2015-7560)
-![img](../img/Pasted_image_20261121210945.png)
-
->[!note]
->El fallo reside en la implementación del protocolo SMB1 en el demonio `smbd`: un usuario remoto autenticado puede crear un enlace simbólico (_symlink_) mediante una llamada UNIX de SMB1 y, posteriormente, utilizar una llamada no UNIX de SMB1 para sobrescribir la ACL del archivo o directorio de destino al que apunta dicho enlace, logrando alterar permisos o eludir restricciones de acceso sobre recursos arbitrarios.
-###### [`CVE-2015-5252`](https://nvd.nist.gov/vuln/detail/CVE-2015-5252)
-![img](../img/Pasted_image_20261121213240.png)
-
->[!note]
->El fallo reside en la gestión de rutas del demonio `smbd` (`vfs.c`), que no valida de forma adecuada los enlaces simbólicos (_symlinks_) cuando existen recursos compartidos con ciertas relaciones de subcadenas en sus nombres o rutas. Esto permite que un atacante remoto aproveche un enlace simbólico para eludir las restricciones de acceso y leer o manipular archivos ubicados fuera del directorio del recurso compartido.
-
-###### [`CVE-2015-0240`](https://nvd.nist.gov/vuln/detail/CVE-2015-0240)
-![img](../img/Pasted_image_20261121222210.png)
-
->[!note]
->El fallo reside en la función `_netr_ServerPasswordSet` del servicio Netlogon dentro del demonio `smbd`: al procesar una petición RPC especialmente manipulada, el servidor intenta liberar memoria (`free()`) utilizando un puntero de la pila que no ha sido inicializado previamente. Esto permite que un atacante remoto, sin necesidad de autenticarse, corrompa la memoria del proceso y logre ejecutar código arbitrario con privilegios de `root` o provocar la caída del servicio.
-###### [`CVE-2014-3493`](https://nvd.nist.gov/vuln/detail/CVE-2014-3493)
-![img](../img/Pasted_image_20261121222525.png)
-
->[!note]
->El fallo reside en la función `push_ascii` del demonio `smbd`: cuando un usuario remoto autenticado intenta leer una ruta de archivo en formato Unicode sin especificar el uso de Unicode en su petición, se produce un error en la conversión del juego de caracteres que desencadena una desreferencia de puntero no válido, provocando corrupción de memoria y la caída del servicio.
-###### [`CVE-2013-4124`](https://nvd.nist.gov/vuln/detail/CVE-2013-4124)
-![img](../img/Pasted_image_20261121222729.png)
-
->[!note]
->El fallo reside en la función `read_nttrans_ea_list` del demonio `smbd` (`nttrans.c`): al procesar una lista de atributos extendidos (_Extended Attributes_) especialmente manipulada dentro de una petición SMB, se produce un desbordamiento de enteros. Esto permite que un atacante remoto provoque un consumo excesivo de memoria y CPU, derivando en la caída o inoperatividad del servicio.
 #### Reconocimiento manual
 ##### HTTP (80)
 Al entrar en la web vemos un panel de inicio de sesión de una aplicación web. No podemos sacar demasiado con lo que vemos sin iniciar sesión.
@@ -824,11 +786,9 @@ Shellcodes: No Results
 ![img](../img/sin_cve_simplehttpserver_0.6.png)
 
 ![img](../img/cve_python_3.11.2.png)
-###### [`CVE-2019-25781`](https://nvd.nist.gov/vuln/detail/CVE-2019-25781)
-![img](../img/Pasted_image_20261122132924.png)
 
->[!note]
->El fallo reside en el análisis de enlaces en línea dentro de los métodos `LinkInlineProcessor.getText()` y `getLink()`: cuando un atacante remoto envía texto Markdown corto que contiene secuencias repetidas de corchetes sin cerrar (`[` o `![`), el analizador se ve forzado a realizar escaneos de complejidad cuadrática. Esto provoca un consumo excesivo de CPU que mantiene bloqueados los procesos (_workers_) durante minutos, pudiendo degradar el rendimiento del servidor o dejar el servicio completamente inaccesible.
+>La única vulnerabilidad afecta a la librería `Python-MarkDown` y no al interprete de Python.  
+
 #### Reconocimiento manual
 ##### `SimpleHTTPServer 0.6 (80)`
 ```bash
