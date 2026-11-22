@@ -225,6 +225,8 @@ No todos los servicios permiten averiguar lo mismo. Documenta qué has podido ob
 | `172.178.0.8` | `445`  |         `Samba smbd 4`          | `CVE-2015-0240`  | ***[CWE-824](https://cwe.mitre.org/data/definitions/824.html)***<br>***[CWE-457](https://cwe.mitre.org/data/definitions/457.html)*** | `10`  |                     ***RCE***                     |
 | `172.178.0.8` | `445`  |         `Samba smbd 4`          | `CVE-2014-3493`  |                                   ***[CWE-119](https://cwe.mitre.org/data/definitions/119.html)***                                   | `2.7` |                     ***DoS***                     |
 | `172.178.0.8` | `445`  |         `Samba smbd 4`          | `CVE-2013-4124`  |                                   ***[CWE-189](https://cwe.mitre.org/data/definitions/189.html)***                                   |  `5`  |                     ***DoS***                     |
+| `172.178.0.10` | `80`  |         `Python 3.11.2`          | `CVE-2019-25781`  |                                   ***[CWE-407](https://cwe.mitre.org/data/definitions/407.html)***                                   |  `8.7`  |                     ***DoS***                     |
+| `172.178.0.10` | `623/UDP`  |         `IPMI 2.0`          | `CVE-2013-4786`  |                                   ***[CWE-255](https://cwe.mitre.org/data/definitions/255.html)***                                   |  `7.5`  |                     ***DoS***                     |
 
 ### Tabla de hallazgos configuraciones
 
