@@ -835,3 +835,115 @@ MAC Address: 12:4F:2B:31:4F:86 (Unknown)
 ###### Métodos de autenticación débiles habilitados
 - **Evidencia:** En `UserAuth` el servidor anuncia soporte para **`password`**, **`md5`**, **`md2`** y **`null`**.
 - **Riesgo:** Permitir autenticación en texto plano (`password`), algoritmos criptográficos rotos (`md2`, `md5`) o sesiones sin autenticación (`null`) debilita gravemente el control de acceso al hardware. (Aunque `PassAuth` indica `non_null_user` —es decir, que existen cuentas con nombre de usuario definido—, mantener habilitados estos métodos en el servicio supone una mala práctica de endurecimiento).
+
+---
+---
+# Informe Ejecutivo de Revisión de Seguridad Interna
+**Cliente:** Gadir Logística, S.L.  
+**Alcance autorizado:** Red interna (`172.17.0.0/24`)  
+**Modalidad:** Reconocimiento activo, enumeración sin autenticación y análisis de vulnerabilidades (no intrusivo, sin explotación)  
+**Fecha de consulta de fuentes (NVD / CISA KEV / EPSS):** 23 de noviembre de 2026  
+
+---
+## 1. Resumen Ejecutivo
+
+Con motivo de la renovación del ciberseguro, se ha realizado una revisión técnica no intrusiva de la red interna de **Gadir Logística, S.L.** (`172.17.0.0/24`), respetando en todo momento la continuidad operativa de los sistemas.
+
+El análisis revela dos conclusiones principales que afectan directamente a la exposición al riesgo y a los requisitos de la aseguradora:
+
+1. **Desfase crítico del inventario de activos:** El inventario facilitado (con revisiones de entre 2017 y 2020) no refleja la red real. De los **8 equipos activos** detectados, **6 no figuraban en el inventario** (*Shadow IT*) y los **2 restantes** ejecutan sistemas operativos y servicios completamente distintos a los documentados.
+2. **Exposición a vulnerabilidades críticas con explotación activa:** Se han identificado servicios desactualizados asociados a fallos críticos que figuran en el catálogo **KEV de CISA** (vulnerabilidades con explotación confirmada en ataques reales, incluidas campañas de *ransomware*), destacando la exposición generalizada de **5 servidores** al fallo reciente de OpenSSH (`CVE-2026-123158`), además de configuraciones inseguras confirmadas en el servidor de archivos (`172.17.0.8`) y en la consola de gestión de hardware (`172.17.0.10`).
+
+Dado que el presupuesto y la capacidad operativa de este trimestre son limitados, este informe propone un **plan de remediación escalonado**, centrado en atajar primero los **5 riesgos críticos** que podrían paralizar la facturación o impedir la renovación del ciberseguro.
+
+---
+## 2. Criterio de Priorización
+
+No se ha ordenado el riesgo únicamente por la puntuación teórica (**CVSS**), sino combinando cuatro factores objetivos:
+
+* **Explotación real (CISA KEV y Ransomware):** Prioridad máxima a vulnerabilidades con explotación activa confirmada y uso en campañas de *ransomware*.
+* **Probabilidad de explotación (EPSS):** Estimación de probabilidad de ataque en los próximos 30 días (fuente: FIRST.org).
+* **Impacto técnico (CVSS v3.1 — C/I/A):** Afectación a la Confidencialidad (C), Integridad (I) y Disponibilidad (A).
+* **Evidencia y contexto de negocio:** Peso adicional a configuraciones inseguras ya confirmadas sin autenticación y a servicios críticos para la operativa.
+
+---
+## 3. Matriz de Vulnerabilidades Priorizadas
+
+| Prioridad | Activo (Puerto) | Servicio | CVE / Hallazgo | CVSS v3.1 (C/I/A) | EPSS* | CISA KEV | Uso en Ransomware |
+| :---: | :--- | :--- | :--- | :---: | :---: | :---: | :---: |
+| **1 (Crítica)** | `172.17.0.5` (`61616/tcp`) | ActiveMQ OpenWire 5.15.15 | **`CVE-2023-46604`** (RCE) | **9.8** *(CNA: 10.0)*<br>C:A / I:A / A:A | Muy alto (>90%) | **SÍ** *(2023-11-02)* | **Sí (Confirmado)** |
+| **2 (Crítica)** | `172.17.0.4`, `.6`, `.7`, `.8`, `.9` (`22/tcp`) | OpenSSH (`< 10.6p2`) | **`CVE-2026-123158`** (*«sshole»* — Elusión de autenticación) | **Crítica** *(ver aviso oficial)*<br>C:A / I:A / A:A | Pendiente / Reciente | **SÍ** | Por confirmar |
+| **3 (Crítica)** | `172.17.0.6` (`8080/tcp`) | Jenkins 2.441 | **`CVE-2024-23897`** (Lectura arbitraria / RCE) | **9.8**<br>C:A / I:A / A:A | Muy alto (>90%) | **SÍ** *(2024-08-19)* | **Reportado** |
+| **4 (Crítica)** | `172.17.0.4` (`8009/tcp`) | Tomcat 9.0.30 / AJP 1.3 | **`CVE-2020-1938`** (Ghostcat) | **9.8**<br>C:A / I:A / A:A | ~99% | **SÍ** *(2022-03-03)* | Desconocido |
+| **5 (Alta)** | `172.17.0.3` (`21/tcp`) | vsftpd 2.3.4 | **`CVE-2011-2523`** (Backdoor) + posible FTP `anonymous` | **9.8**<br>C:A / I:A / A:A | ~96% | No | No consta |
+| **6 (Alta)** | `172.17.0.10` (`623/udp`) | IPMI 2.0 (BMC) | **`CVE-2013-4786`** (RAKP) + métodos débiles (`null`, `md2`, `md5`, `password`) | **7.5**<br>C:A / I:N / A:N | Medio/Alto | No | No consta |
+| **7 (Alta)** | `172.17.0.8` (`445/tcp`) | Samba smbd 4 | **Configuración insegura confirmada:** sesión nula `IPC$`, exposición de `/var/www/html` (`home`), sin firma obligatoria ni cifrado | *N/A (Config.)*<br>C:A / I:A / A:B | *N/A* | *N/A* | *N/A* |
+| **8 (Media)** | `172.17.0.6` (`8080/tcp`) | Jenkins 2.441 | **`CVE-2024-23898`** (Validación de origen WebSocket) | **8.8**<br>C:A / I:A / A:A | Bajo/Medio | No | No consta |
+| **9 (Media)** | `172.17.0.3` y `.8` (`80/tcp`) | Apache httpd 2.4.58 | **`CVE-2023-38709`** (HTTP Response Splitting) | **7.3**<br>C:B / I:B / A:B | Bajo | No | No consta |
+| **10 (Media)** | `172.17.0.7` (`22/tcp`) | OpenSSH 7.7 | **`CVE-2018-15473`** (Enumeración usuarios) / **`CVE-2019-16905`** | **5.3 / 7.8** | Bajo/Medio | No | No consta |
+| **11 (Baja)** | `172.17.0.4` (`8080/tcp`) | Apache Tomcat 9.0.30 | **`CVE-2022-34305`** (XSS), **`CVE-2020-1935`**, **`CVE-2019-17569`** | **6.1 / 4.8** | Bajo | No | No consta |
+| **12 (Baja)** | `172.17.0.5` (`443/tcp`) | jQuery 3.4.1 / Bootstrap 3.4.1 | **`CVE-2020-11022`**, **`CVE-2020-11023`**, **`CVE-2019-8331`** (XSS) | **6.1** | Bajo | No | No consta |
+
+---
+## 4. Plan de Acción Recomendado: ¿Qué arreglar primero este trimestre?
+
+Para maximizar la reducción de riesgo con el presupuesto disponible este trimestre, recomendamos concentrar los esfuerzos en **5 actuaciones inmediatas**:
+### Bloque 1 — Actuaciones inmediatas (Este trimestre)
+
+1. **Actualizar Apache ActiveMQ en `172.17.0.5` (`CVE-2023-46604`) — Prioridad #1**
+   - **Por qué primero:** Permite ejecución remota de código sin autenticación, está en CISA KEV y **consta su uso activo en campañas de ransomware**. Un compromiso en el servidor de mensajería paralizaría la comunicación con operadores y la facturación.
+   - **Acción:** Actualizar ActiveMQ a una versión parcheada (`5.15.16` o superior) y restringir el puerto `61616/tcp` por firewall únicamente a los equipos que necesiten comunicarse con el broker.
+
+2. **Actualizar OpenSSH en los 5 servidores afectados (`CVE-2026-123158` / *sshole*) — Prioridad #2**
+	- **Por qué ahora:** Afecta potencialmente a 5 de los 8 equipos activos (`172.17.0.4`, `.6`, `.7`, `.8` y `.9`, todos con versiones anteriores a la `10.6p2`), permite eludir la autenticación y figura en CISA KEV por explotación activa.
+	- **Acción:** Verificar parches *backported* (`dpkg -l openssh-server`), actualizar `openssh-server` de inmediato (priorizando los equipos obsoletos `.4` y `.7`) y reiniciar `sshd`. Como mitigación temporal, deshabilitar el acceso por contraseña (`PasswordAuthentication no`) y restringir el puerto `22/tcp` por firewall. *(Al actualizar `.7` se corrige también la prioridad #10).*
+
+3. **Actualizar Jenkins en `172.17.0.6` (`CVE-2024-23897` y `CVE-2024-23898`) — Prioridad #3**
+	- **Por qué ahora:** Está en CISA KEV y permite leer archivos internos del servidor (como credenciales o claves) sin autenticarse, lo que facilita el control total del servidor.
+	- **Acción:** Actualizar Jenkins a una versión igual o superior a `2.442` (o LTS `2.426.3+`). Como mitigación temporal mientras se actualiza, deshabilitar el acceso al CLI de Jenkins.
+
+4. **Deshabilitar o proteger el conector AJP de Tomcat en `172.17.0.4` (`CVE-2020-1938`) — Prioridad #4**
+	- **Por qué ahora:** Vulnerabilidad *Ghostcat* en CISA KEV con probabilidad de explotación cercana al 99%.
+	- **Acción:** Si el puerto `8009/tcp` (AJP) no es necesario, deshabilitarlo en `server.xml` y bloquearlo en el firewall. Actualizar Apache Tomcat 9.0.30 a la última versión estable de la rama 9.0.x (esto corrige también las prioridades #11).
+
+5. **Verificar y sustituir `vsftpd 2.3.4` en `172.17.0.3` (`CVE-2011-2523`) — Prioridad #5**
+	- **Por qué ahora:** Aunque no figure en CISA KEV por su antigüedad, si el binario instalado corresponde a la versión con puerta trasera, permite acceso administrativo inmediato.
+	- **Acción:** Sustituir `vsftpd 2.3.4` por una versión actual mantenida por Ubuntu (o migrar a SFTP sobre SSH) y verificar que el acceso `anonymous` esté deshabilitado.
+### Bloque 2 — Corto plazo (Siguiente ventana de mantenimiento)
+
+- **Aislar la gestión IPMI (`172.17.0.10`, puerto `623/udp`):** Mover el acceso BMC a una VLAN de gestión aislada (no accesible desde la red general), deshabilitar IPMI 1.5 y desactivar los métodos de autenticación `null`, `password`, `md2` y `md5`.
+- **Endurecer el servidor Samba (`172.17.0.8`):** Deshabilitar las sesiones anónimas (`restrict anonymous = 2`), exigir firma digital (`server signing = mandatory`), habilitar cifrado SMBv3, cerrar el puerto heredado `139/tcp` y revisar urgentemente por qué el recurso compartido `home` apunta al directorio web `/var/www/html`.
+- **Formalizar el inventario de activos:** Adoptar el inventario corregido entregado junto a este informe, asignar un responsable nominal a cada equipo y confirmar la baja de los 8 activos legados que ya no responden.
+### Bloque 3 — Medio plazo (Mantenimiento ordinario)
+
+- Verificar mediante `dpkg` si `Apache 2.4.58` (`172.17.0.3` y `.8`) cuenta con parches *backported* de la distribución o actualizarlo.
+- Actualizar las librerías front-end (`jQuery 3.4.1` y `Bootstrap 3.4.1`) en el portal web de `172.17.0.5`.
+
+---
+## 5. Respuesta al Aviso Urgente del Cliente: sshole (`CVE-2026-123158`)
+
+- **Vulnerabilidad consultada:** **`CVE-2026-123158`** (conocida como *«sshole»*), vulnerabilidad de elusión de autenticación en **OpenSSH** (mediante el envío de una contraseña larga) que afecta a todas las **versiones anteriores a la `10.6p2`** y figura en el catálogo **KEV de CISA** por explotación activa confirmada.
+
+- **¿Afecta a Gadir Logística, S.L.?:** **Potencialmente sí, y de forma generalizada.** Al contrastar el rango afectado (`< 10.6p2`) con el inventario real de los **8 equipos activos** en `172.17.0.0/24`, se confirma que **los 5 servidores que exponen OpenSSH en el puerto `22/tcp` ejecutan versiones anteriores a la `10.6p2`**. Los otros **3 equipos** (`172.17.0.3`, `172.17.0.5` y `172.17.0.10`) no tienen el puerto `22/tcp` abierto, por lo que no presentan exposición directa a este fallo.
+
+- **Qué podemos sostener con nuestras evidencias:** Mediante el reconocimiento activo de versiones (`nmap -sV`) se han identificado las siguientes 5 instancias dentro del rango afectado (`< 10.6p2`):
+	- `172.17.0.4` (`22/tcp`): `OpenSSH 7.9p1 Debian 10+deb10u4` — **En rango afectado** (sistema Debian 10 obsoleto / sin soporte estándar).
+	- `172.17.0.6` (`22/tcp`): `OpenSSH 9.2p1 Debian 2+deb12u2` — **En rango afectado** (nivel de parcheo antiguo respecto a `.9`).
+	- `172.17.0.7` (`22/tcp`): `OpenSSH 7.7` — **En rango afectado** (versión muy antigua).
+	- `172.17.0.8` (`22/tcp`): `OpenSSH 9.6p1 Ubuntu 3ubuntu13.5` — **En rango afectado**.
+	- `172.17.0.9` (`22/tcp`): `OpenSSH 9.2p1 Debian 2+deb12u10` — **En rango afectado**.
+	- Siguiendo las reglas de compromiso acordadas, **no se ha intentado reproducir el fallo** ni enviar contraseñas de prueba.
+
+* **Qué queda pendiente de comprobar (sin explotar):**
+	1. **Parches *backported*:** Comprobar internamente en cada servidor (`dpkg -l openssh-server` y `apt changelog openssh-server`) si Debian o Ubuntu ya han aplicado la corrección de seguridad de `CVE-2026-123158` manteniendo el número de versión base (`9.2p1` o `9.6p1`). En el caso de `172.17.0.4` (Debian 10) y `172.17.0.7` (`7.7`), es altamente improbable que cuenten con parche oficial reciente.
+	2. **Configuración de autenticación:** Revisar `/etc/ssh/sshd_config` para verificar si `PasswordAuthentication` está habilitado (`yes`), ya que el vector de ataque descrito depende del envío de contraseñas.
+	3. **Restricciones de red:** Confirmar si existen reglas de firewall que limiten el acceso al puerto `22/tcp` únicamente a equipos de administración autorizados.
+
+* **Recomendación inmediata para Gerencia y el ciberseguro:**
+	- Actualizar `openssh-server` de inmediato en los 5 equipos (o migrar/aislar los equipos obsoletos `.4` y `.7` si no admiten actualización) y reiniciar el servicio `sshd`.
+	- Como mitigación temporal mientras se parchea, deshabilitar el acceso por contraseña (`PasswordAuthentication no`, usando solo claves SSH) y restringir el puerto `22/tcp` por firewall.
+	- Guardar la evidencia de las actualizaciones (`dpkg -l openssh-server` / `ssh -V`) para acreditarlo ante la aseguradora.
+---
+## 6. Limitaciones del Alcance
+
+De acuerdo con las reglas de compromiso acordadas, **no se ha explotado ninguna vulnerabilidad** ni se han probado credenciales. Por tanto, los hallazgos basados en detección de versiones representan **vulnerabilidades potenciales** cuya confirmación definitiva requiere verificación interna en los servidores (revisión de paquetes instalados, archivos de configuración y parches) por parte del equipo técnico del cliente o en una fase posterior autorizada.
