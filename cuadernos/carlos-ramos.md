@@ -35,6 +35,7 @@ Host is up.
 Nmap done: 256 IP addresses (9 hosts up) scanned in 4.03 seconds
 ```
 ![[Pasted image 20261123223732.png](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123223732.png)]
+
 _Aparentemente existen 9 máquina activas en la red. 8 relevantes y 1 aparte que es la nuestra_
 
 >[!important]
@@ -76,6 +77,7 @@ Host is up.
 Nmap done: 256 IP addresses (9 hosts up) scanned in 4.00 seconds
 >```
 >>![[Pasted image 20261123224242.png](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123224242.png)]
+>
 >_ARP por defecto_
 >
 >``` bash
@@ -110,6 +112,7 @@ Host is up.
 Nmap done: 256 IP addresses (9 hosts up) scanned in 28.07 seconds
 >```
 >>![[Pasted image 20261123224002.png](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123224002.png)]
+>
 >_Fuerza ICMP_
 >
 ## Formateo de IPs para automatización
