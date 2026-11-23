@@ -1,13 +1,13 @@
 # mapping-the-maze
 # Grupo 5: Clan-Team-Plora
 
-##Integrantes:
+## Integrantes:
 - Esteban altero
 - Jose Luis Reina
 - Carlos Luis Ramos
 - Coraima Medina
 
-##Enlaces:
+## Enlaces:
 - **Cuadernos:**
   - **Esteban:**
   - **Jose Luis:**
