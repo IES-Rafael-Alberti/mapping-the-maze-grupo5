@@ -15,5 +15,5 @@
   - **Coraima:**
 - **Scope:** https://github.com/ealtgar/mapping-the-maze/blob/main/scope.txt
 - **Inventario:** https://github.com/ealtgar/mapping-the-maze/blob/main/inventario.md
-- **registro-vulns:** https://github.com/ealtgar/mapping-the-maze/blob/main/registro-vulns.md
-- **informe-cliente:** https://github.com/ealtgar/mapping-the-maze/blob/main/informe-cliente.md
+- **Registro Vulnerabilidades:** https://github.com/ealtgar/mapping-the-maze/blob/main/registro-vulns.md
+- **Informe Cliente:** https://github.com/ealtgar/mapping-the-maze/blob/main/informe-cliente.md
