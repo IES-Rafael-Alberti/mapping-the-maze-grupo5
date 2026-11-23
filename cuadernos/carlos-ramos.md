@@ -76,7 +76,7 @@ Nmap scan report for 172.17.0.1
 Host is up.
 Nmap done: 256 IP addresses (9 hosts up) scanned in 4.00 seconds
 >```
->>![Pasted image 20261123224242.png](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123224242.png)
+>>![img](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123224242.png)
 >
 >_ARP por defecto_
 >
@@ -111,7 +111,7 @@ Nmap scan report for 172.17.0.1
 Host is up.
 Nmap done: 256 IP addresses (9 hosts up) scanned in 28.07 seconds
 >```
->>![Pasted image 20261123224002.png](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123224002.png)
+>>![img](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123224002.png)
 >
 >_Fuerza ICMP_
 >
