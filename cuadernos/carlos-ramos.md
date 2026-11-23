@@ -34,7 +34,7 @@ Nmap scan report for 172.17.0.1
 Host is up.
 Nmap done: 256 IP addresses (9 hosts up) scanned in 4.03 seconds
 ```
-![[Pasted image 20261123223732.png](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123223732.png)]
+![Pasted image 20261123223732.png](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123223732.png)
 
 _Aparentemente existen 9 máquina activas en la red. 8 relevantes y 1 aparte que es la nuestra_
 
