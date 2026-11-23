@@ -11,7 +11,7 @@
 - **Cuadernos:**
   - **Esteban:** https://github.com/ealtgar/mapping-the-maze/blob/main/cuadernos/esteban-altero.md
   - **Jose Luis:** https://github.com/ealtgar/mapping-the-maze/blob/main/cuadernos/jose-reina.md
-  - **Carlos:**
+  - **Carlos:** https://github.com/ealtgar/mapping-the-maze/blob/main/cuadernos/carlos-ramos.md
   - **Coraima:**
 - **Scope:** https://github.com/ealtgar/mapping-the-maze/blob/main/scope.txt
 - **Inventario:** https://github.com/ealtgar/mapping-the-maze/blob/main/inventario.md
