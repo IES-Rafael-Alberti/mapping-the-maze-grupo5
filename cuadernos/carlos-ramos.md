@@ -79,7 +79,7 @@ _Aparentemente existen 9 máquina activas en la red. 8 relevantes y 1 aparte que
 ![img](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123224242.png)
 >
 _ARP por defecto_
->
+>[!important]
 >``` bash
 >sudo nmap --disable-arp-ping -sn 172.17.0.0/24
 >Starting Nmap 7.99 ( https://nmap.org ) at 2026-11-23 19:04 +0000
@@ -113,7 +113,7 @@ _ARP por defecto_
 >```
 ![img](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123224002.png)
 >
->_Fuerza ICMP_
+_Fuerza ICMP_
 >
 
 ## Formateo de IPs para automatización
