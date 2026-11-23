@@ -46,75 +46,76 @@ _Aparentemente existen 9 máquina activas en la red. 8 relevantes y 1 aparte que
 >- `sudo nmap -sn 172.17.0.0/24` usa ARP por defecto.
 >- `sudo nmap --disable-arp-ping -sn 172.17.0.0/24` fuerza ICMP.
 >``` bash
-sudo nmap -sn 172.17.0.0/24
-Starting Nmap 7.99 ( https://nmap.org ) at 2026-11-23 21:40 +0000
-Nmap scan report for 172.17.0.3
-Host is up (0.000011s latency).
-MAC Address: 0A:2A:A7:EB:68:12 (Unknown)
-Nmap scan report for 172.17.0.4
-Host is up (0.000010s latency).
-MAC Address: D2:63:24:55:CF:A7 (Unknown)
-Nmap scan report for 172.17.0.5
-Host is up (0.0000080s latency).
-MAC Address: A2:6F:15:C7:51:5C (Unknown)
-Nmap scan report for 172.17.0.6
-Host is up (0.0000080s latency).
-MAC Address: 2A:D7:A9:1B:98:3E (Unknown)
-Nmap scan report for 172.17.0.7
-Host is up (0.0000080s latency).
-MAC Address: E2:46:92:21:99:88 (Unknown)
-Nmap scan report for 172.17.0.8
-Host is up (0.0000090s latency).
-MAC Address: 02:BD:EC:0E:81:9E (Unknown)
-Nmap scan report for 172.17.0.9
-Host is up (0.0000060s latency).
-MAC Address: DE:A1:F7:40:EB:39 (Unknown)
-Nmap scan report for 172.17.0.10
-Host is up (0.000015s latency).
-MAC Address: 66:AE:B1:77:FD:C9 (Unknown)
-Nmap scan report for 172.17.0.1
-Host is up.
-Nmap done: 256 IP addresses (9 hosts up) scanned in 4.00 seconds
+>sudo nmap -sn 172.17.0.0/24
+>Starting Nmap 7.99 ( https://nmap.org ) at 2026-11-23 21:40 +0000
+>Nmap scan report for 172.17.0.3
+>Host is up (0.000011s latency).
+>MAC Address: 0A:2A:A7:EB:68:12 (Unknown)
+>Nmap scan report for 172.17.0.4
+>Host is up (0.000010s latency).
+>MAC Address: D2:63:24:55:CF:A7 (Unknown)
+>Nmap scan report for 172.17.0.5
+>Host is up (0.0000080s latency).
+>MAC Address: A2:6F:15:C7:51:5C (Unknown)
+>Nmap scan report for 172.17.0.6
+>Host is up (0.0000080s latency).
+>MAC Address: 2A:D7:A9:1B:98:3E (Unknown)
+>Nmap scan report for 172.17.0.7
+>Host is up (0.0000080s latency).
+>MAC Address: E2:46:92:21:99:88 (Unknown)
+>Nmap scan report for 172.17.0.8
+>Host is up (0.0000090s latency).
+>MAC Address: 02:BD:EC:0E:81:9E (Unknown)
+>Nmap scan report for 172.17.0.9
+>Host is up (0.0000060s latency).
+>MAC Address: DE:A1:F7:40:EB:39 (Unknown)
+>Nmap scan report for 172.17.0.10
+>Host is up (0.000015s latency).
+>MAC Address: 66:AE:B1:77:FD:C9 (Unknown)
+>Nmap scan report for 172.17.0.1
+>Host is up.
+>Nmap done: 256 IP addresses (9 hosts up) scanned in 4.00 seconds
 >```
 ![img](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123224242.png)
 >
->_ARP por defecto_
+_ARP por defecto_
 >
 >``` bash
 >sudo nmap --disable-arp-ping -sn 172.17.0.0/24
 >Starting Nmap 7.99 ( https://nmap.org ) at 2026-11-23 19:04 +0000
-Nmap scan report for 172.17.0.3
-Host is up (0.000054s latency).
-MAC Address: 0A:2A:A7:EB:68:12 (Unknown)
-Nmap scan report for 172.17.0.4
-Host is up (0.000026s latency).
-MAC Address: D2:63:24:55:CF:A7 (Unknown)
-Nmap scan report for 172.17.0.5
-Host is up (0.000024s latency).
-MAC Address: A2:6F:15:C7:51:5C (Unknown)
-Nmap scan report for 172.17.0.6
-Host is up (0.000023s latency).
-MAC Address: 2A:D7:A9:1B:98:3E (Unknown)
-Nmap scan report for 172.17.0.7
-Host is up (0.000022s latency).
-MAC Address: E2:46:92:21:99:88 (Unknown)
-Nmap scan report for 172.17.0.8
-Host is up (0.000022s latency).
-MAC Address: 02:BD:EC:0E:81:9E (Unknown)
-Nmap scan report for 172.17.0.9
-Host is up (0.000025s latency).
-MAC Address: DE:A1:F7:40:EB:39 (Unknown)
-Nmap scan report for 172.17.0.10
-Host is up (0.00021s latency).
-MAC Address: 66:AE:B1:77:FD:C9 (Unknown)
-Nmap scan report for 172.17.0.1
-Host is up.
-Nmap done: 256 IP addresses (9 hosts up) scanned in 28.07 seconds
+>Nmap scan report for 172.17.0.3
+>Host is up (0.000054s latency).
+>MAC Address: 0A:2A:A7:EB:68:12 (Unknown)
+>Nmap scan report for 172.17.0.4
+>Host is up (0.000026s latency).
+>MAC Address: D2:63:24:55:CF:A7 (Unknown)
+>Nmap scan report for 172.17.0.5
+>Host is up (0.000024s latency).
+>MAC Address: A2:6F:15:C7:51:5C (Unknown)
+>Nmap scan report for 172.17.0.6
+>Host is up (0.000023s latency).
+>MAC Address: 2A:D7:A9:1B:98:3E (Unknown)
+>Nmap scan report for 172.17.0.7
+>Host is up (0.000022s latency).
+>MAC Address: E2:46:92:21:99:88 (Unknown)
+>Nmap scan report for 172.17.0.8
+>Host is up (0.000022s latency).
+>MAC Address: 02:BD:EC:0E:81:9E (Unknown)
+>Nmap scan report for 172.17.0.9
+>Host is up (0.000025s latency).
+>MAC Address: DE:A1:F7:40:EB:39 (Unknown)
+>Nmap scan report for 172.17.0.10
+>Host is up (0.00021s latency).
+>MAC Address: 66:AE:B1:77:FD:C9 (Unknown)
+>Nmap scan report for 172.17.0.1
+>Host is up.
+>Nmap done: 256 IP addresses (9 hosts up) scanned in 28.07 seconds
 >```
 ![img](https://github.com/ealtgar/mapping-the-maze/blob/main/img/Pasted%20image%2020261123224002.png)
 >
 >_Fuerza ICMP_
 >
+
 ## Formateo de IPs para automatización
 
 `hosts.nmap` tiene mucha información, y para pasar varias IPs a `nmap` hacen falta solo las IPs, separadas por espacios.
