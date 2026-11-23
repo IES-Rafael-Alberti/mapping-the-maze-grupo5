@@ -1,1 +1,12 @@
+# ==============================================================================
+# ALCANCE AUTORIZADO (SCOPE) — Gadir Logística, S.L.
+# ==============================================================================
+# Proyecto: Mapping the Maze (UD2) - Revisión de seguridad interna
+# Restricciones: Solo descubrimiento, enumeración sin autenticación y análisis
+#                no intrusivo. Prohibida la explotación, fuerza bruta, pruebas
+#                de credenciales o escaneos agresivos.
+# Fuera de alcance: Cualquier dirección IP o subred externa a la listada abajo
+#                   (incluida 172.17.1.0/24 del inventario legado).
+# ==============================================================================
 
+172.17.0.0/24
