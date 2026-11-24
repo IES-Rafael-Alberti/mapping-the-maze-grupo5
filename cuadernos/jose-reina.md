@@ -7,7 +7,7 @@ Partimos del rango autorizado y descartamos la hoja de inventario del cliente po
 sudo nmap -sn 172.17.0.0/24 -oN hosts.nmap
 ```
 
-![imagen 1](img/nmap1.png)
+![imagen 1]([img/nmap1.png](https://github.com/ealtgar/mapping-the-maze/blob/main/img/nmap1.png))
 
 **Cómo funciona el descubrimiento de hosts en Nmap.** \
 Cuando ejecutamos nmap -sn, la forma predeterminada de realizar el descubrimiento depende de la posición del objetivo respecto a la máquina analista:
