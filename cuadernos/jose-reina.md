@@ -7,8 +7,7 @@ Partimos del rango autorizado y descartamos la hoja de inventario del cliente po
 sudo nmap -sn 172.17.0.0/24 -oN hosts.nmap
 ```
 
-![](img/nmap1.png)
-![](img/nmap1.png)
+![imagen 1](img/nmap1.png)
 
 **Cómo funciona el descubrimiento de hosts en Nmap.** \
 Cuando ejecutamos nmap -sn, la forma predeterminada de realizar el descubrimiento depende de la posición del objetivo respecto a la máquina analista:
@@ -23,11 +22,11 @@ Comprobación con tcpdump: podemos corroborar qué tráfico genera Nmap leyendo 
 
 Con el comando por defecto sudo nmap -sn 172.17.0.0/24, tcpdump muestra tráfico ARP y respuestas de los hosts vivos), confirmando que en el mismo segmento Nmap no usa ICMP: 
 
-![](img/nmap2.png) 
+![imagen 2](img/nmap2.png) 
 
 Si forzamos a Nmap a usar ICMP y desactivamos ARP con sudo nmap --disable-arp-ping -sn 172.17.0.0/24, tcpdump muestra ICMP Echo Request / Echo Reply, y el resultado puede variar: hosts que respondían por ARP pueden no responder a ICMP: 
 
-![](img/nmap3.png) 
+![imagen 3](img/nmap3.png) 
 
 En esta ocasión obtenemos el mismo resultado con ambos métodos, pero es muy probable que en otros escenarios usar ICMP no nos muestre los mismos resultados que ARP. Por eso conviene no fiarse de un único método y, si se sospecha filtrado, contrastar con tcpdump y probar --disable-arp-ping.
 
