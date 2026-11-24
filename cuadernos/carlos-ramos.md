@@ -116,6 +116,11 @@ _ARP por defecto_
 _Fuerza ICMP_
 >
 
+Ahora, sacamos todos los puertos UDP de todas las máquina de la red.
+``` bash
+sudo nmap -p- -sS -Pn -n -oN puertos_global.nmap -oX puertos_global.xml $(cat ~/Documents/HE/RECON_ACTIVE/informatico_fantasma/hosts_ips.txt)
+```
+
 ## Formateo de IPs para automatización
 
 `hosts.nmap` tiene mucha información, y para pasar varias IPs a `nmap` hacen falta solo las IPs, separadas por espacios.
