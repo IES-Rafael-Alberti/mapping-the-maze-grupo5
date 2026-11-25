@@ -8,7 +8,7 @@
 - Coraima Medina
 
 ## Enlaces:
-### Cuadernos:
+- **Cuadernos:**
   - **Esteban:** https://github.com/IES-Rafael-Alberti/mapping-the-maze/blob/main/cuadernos/esteban-altero.md
   - **Jose Luis:** https://github.com/IES-Rafael-Alberti/mapping-the-maze/blob/main/cuadernos/jose-reina.md
   - **Carlos:** https://github.com/IES-Rafael-Alberti/mapping-the-maze/blob/main/cuadernos/carlos-ramos.md
@@ -18,13 +18,13 @@
 - **Registro Vulnerabilidades:** https://github.com/IES-Rafael-Alberti/mapping-the-maze/blob/main/registro-vulns.md
 - **Informe Cliente:** https://github.com/IES-Rafael-Alberti/mapping-the-maze/blob/main/informe-cliente.md
 
-### Informes:
+- **Informes:**
   - **Jose Luis Reina:** https://github.com/IES-Rafael-Alberti/mapping-the-maze-grupo5/blob/main/agentes/jose-reina/informe.md
   - 
   -
   -
   
-### Trazas:
+- **Trazas:**
   - **Jose Luis Reina:** https://github.com/IES-Rafael-Alberti/mapping-the-maze-grupo5/blob/main/agentes/jose-reina/trazas/traza.jsonl
   -
   -
