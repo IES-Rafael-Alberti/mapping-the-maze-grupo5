@@ -1,3 +1,91 @@
+# Comparativa agente vs agente
+
+Nomenclatura: **A** = `Carlos`, **B** = `Coraima`, **C** = `Esteban`, **D** = `Jose`.
+
+> **Coste y tiempo:** ninguno de los ficheros contiene tokens, número de llamadas, duración ni coste en dinero, así que no es posible compararlos con datos reales. El único indicador indirecto es la numeración de evidencias, que refleja cuántas consultas hizo cada agente.
+
+---
+
+## 1. Qué encontró cada agente
+
+Los cuatro informes coinciden en lo básico: 9 equipos, los mismos servicios y CVE-2023-46604 (ActiveMQ) como prioridad nº 1. Las diferencias están en el recuento, en qué CVE entran en el top 10 y en la calidad interna.
+
+| Criterio                           | Carlos | Coraima | Esteban | Jose           |
+| ---------------------------------- | ------ | ------- | ------- | -------------- |
+| Servicios declarados en el resumen | 23     | 22      | 25      | 20             |
+| Filas reales en la tabla           | 25     | 25      | 25      | 19 (+6 aparte) |
+| ¿Cuadra el recuento?               | No     | No      | Sí      | No             |
+| Última evidencia citada            | E30    | E31     | E31     | E28            |
+| CVE en el top 10                   | 10     | 10      | 10      | 10             |
+
+### Composición del top 10
+
+- **Comunes a los 4:** CVE-2023-46604, CVE-2024-38475, CVE-2025-24813, CVE-2017-7494, CVE-2020-1938, CVE-2026-34197 y CVE-2026-123158.
+- **A y C:** idénticos en conjunto y en orden. Añaden CVE-2023-44487 (Tomcat), CVE-2020-1472 (Samba, Zerologon) y CVE-2024-6387 (OpenSSH, regreSSHion).
+- **B:** no incluye CVE-2023-44487 ni CVE-2024-6387. Añade CVE-2011-2523 (backdoor de vsftpd) y CVE-2023-38408 (ssh-agent, EPSS 0,797).
+- **D:** no incluye CVE-2020-1472 (Zerologon). Sí incluye CVE-2011-2523.
+
+---
+
+## 2. Por qué difieren
+
+- **No determinismo del agente.** Cada agente eligió consultas distintas, lo que se nota en que la última evidencia va de E28 a E31. D hizo menos consultas y por eso no encontró Zerologon.
+- **Cada uno hizo su propio escaneo (o el laboratorio se reinició).** El puerto efímero `tcpwrapped` de 172.17.0.5 cambia en cada informe: 40761, 40833, 36395 y 40763. Indica ejecuciones de nmap separadas, así que ni siquiera partían de la misma foto.
+- **Criterio de "servicio".** D cuenta solo los servicios con versión, de ahí su "20". C cuenta todos. A y B tienen 25 filas pero escriben 23 y 22, lo que parece un error de recuento del LLM sin verificar.
+- **Política de agrupación del top 10.** B consolida un mismo CVE en varios equipos, lo que libera huecos para otros CVE. A, C y D listan un CVE por equipo o servicio principal y mencionan los demás en el texto.
+- **Método de búsqueda.** Los productos con versión se buscan por CPE (más fiable); los que no, por palabras clave (más ruido). Eso explica que CVE como los de vsftpd o SimpleHTTPServer aparezcan solo en algunos informes.
+
+---
+
+## 3. Ventajas e inconvenientes
+
+### A (`Carlos`)
+
+- ✅ Criterios de ordenación explicados uno a uno, fecha de consulta visible y aviso de CVE duplicadas por servicio.
+- ❌ Recuento erróneo (23 frente a 25 filas) y la justificación de la fila 4 ("segundo lugar en EPSS entre las KEV") es incorrecta.
+- ❌ Omite Apache 2.4.68 de la lista de backports.
+- ❌ Atribuye CVE-2026-123158 solo a .1, aunque lo menciona para otros equipos.
+
+### B (`Coraima`)
+
+- ✅ Es el único que consolida por CVE (6 equipos con OpenSSH, 4 con Apache) y detecta vsftpd y CVE-2023-38408.
+- ❌ El orden contradice su propia regla: CVE-2024-38475 (KEV, EPSS 1,000) queda en la fila 8, por debajo de otros con menor EPSS.
+- ❌ Omite CVE-2023-44487 (EPSS 1,000, KEV) del top 10.
+- ❌ Incoherencias internas: dice "5 equipos" y luego "6", e incluye .7 (OpenSSH 7.7, sin sufijo de distribución) entre los "con prefijo Debian/Ubuntu".
+- ❌ Recuento erróneo (22 frente a 25 filas).
+
+### C (`Esteban`)
+
+- ✅ Es el más consistente: el recuento cuadra, el orden respeta KEV → EPSS → CVSS y los empates están bien resueltos.
+- ✅ Incluye ambos CVE de Samba, con el aviso de que no encontrar CVE no demuestra que el servicio sea seguro.
+- ❌ Repite Jetty en dos viñetas y no consolida CVE entre equipos.
+- ❌ No incluye el backdoor de vsftpd, que es un riesgo evidente.
+
+### D (`Jose`)
+
+- ✅ Es el más compacto, con una justificación del orden clara y una sección "A verificar" bien organizada.
+- ✅ Probablemente el más barato y rápido, por tener menos evidencias (E28). Es una inferencia, no un dato.
+- ❌ Recuento incoherente: dice 20 pero hay 19 filas más 6 "omitidas". Además llama "sin versión" a puertos que sí tienen versión (61614 Jetty, 139 Samba).
+- ❌ Pierde Zerologon (CVE-2020-1472), que está en KEV con ransomware.
+
+### Valoración global
+
+**C** es el más fiable. **D** es el más eficiente. **A** y **B** aportan ideas útiles (consolidar por CVE, vsftpd), pero son los que más errores de coherencia tiene.
+
+---
+
+## 4. Mejoras propuestas
+
+1. **Que el código haga lo mecánico y el LLM solo la narrativa.** Recuentos, ordenación por KEV/EPSS/CVSS, agrupación por CVE y tablas deben salir de un script. Así desaparecen los errores 23/22/20 frente a 25 y los órdenes incoherentes.
+2. **Validador automático al final.** Que compruebe que el número del resumen coincide con las filas, que el orden respeta la regla declarada y que todo ID de evidencia existe.
+3. **Consolidar por CVE con la lista de equipos afectados** (idea de B) y reservar los huecos del top 10 para CVE distintos. Así entrarían vsftpd, Zerologon y regreSSHion a la vez.
+4. **Procedimiento común de consulta**, para que todos los agentes busquen los mismos productos: cada servicio con versión por CPE y, si falla, por palabras clave marcado como "ruido".
+5. **Resolver los backports consultando los trackers de Debian y Ubuntu** en lugar de dejarlo como "a verificar". Reduciría mucho los falsos positivos de OpenSSH y Apache.
+6. **Verificación activa autorizada** (scripts NSE no destructivos o comprobaciones de versión por banner) para pasar de "potencial (solo versión)" a "confirmado".
+7. **Revisar CVE-2026-123158.** Es el único con un identificador atípico y aparece como KEV desde 2026-11-09, posterior al conocimiento fiable del modelo. Conviene comprobarlo directamente contra NVD y KEV.
+8. **Instrumentar coste y tiempo.** Registrar tokens, llamadas a herramientas y duración de cada ejecución, y repetir cada agente 3 veces para medir su variabilidad.
+
+
 # Comparativa: agentes vs. equipo
 
 **Leyenda:** ✅ = coincide con el informe · ⚠️ = parcialmente correcto o con matices · ❌ = incorrecto / no detectado / falso positivo · ➖ = no aplica (no lo cubre o no aplica a ese agente)
