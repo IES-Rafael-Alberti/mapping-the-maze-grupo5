@@ -21,7 +21,7 @@
 - **Informes:**
   - **Jose Luis Reina:** https://github.com/IES-Rafael-Alberti/mapping-the-maze-grupo5/blob/main/agentes/jose-reina/informe.md
   - **Esteban Altero García**: https://github.com/IES-Rafael-Alberti/mapping-the-maze-grupo5/blob/main/agentes/esteban-altero-1/informe.md
-  -
+  - **Carlos Luis Ramos García:** https://github.com/IES-Rafael-Alberti/mapping-the-maze-grupo5/blob/main/agentes/carlos-ramos-2/informe.md
   -
   
 - **Trazas:**
