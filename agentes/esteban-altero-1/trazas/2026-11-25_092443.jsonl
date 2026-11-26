@@ -1,72 +1,300 @@
-# Informe de enumeración — Red 172.17.0.0/24
-
-## 1. Resumen ejecutivo
-
-Se identificaron 9 equipos activos en la red autorizada, ejecutando un total de 25 servicios TCP. Los riesgos más graves concentrados en tres servicios: Apache ActiveMQ 5.15.15 (172.17.0.5), Samba 4 (172.17.0.8) y Apache httpd 2.4.58/2.4.59 (172.17.0.3, 172.17.0.5, 172.17.0.8), todos con vulnerabilidades presentes en el catálogo KEV de CISA y, en el caso de ActiveMQ y Samba, con actividad de ransomware confirmada en campo. Se recomienda revisar con prioridad la exposición de ActiveMQ y Samba, y verificar si las versiones de Apache httpd y OpenSSH han sido parcheadas mediante backport en Debian/Ubuntu.
-
-## 2. Equipos y servicios
-
-| Equipo | Puerto | Servicio y versión | Evidencia |
-|---|---|---|---|
-| 172.17.0.1 | 22/tcp | OpenSSH 10.3p1 Debian 5 | E10 |
-| 172.17.0.3 | 21/tcp | vsftpd 2.3.4 | E02 |
-| 172.17.0.3 | 80/tcp | Apache httpd 2.4.58 ((Ubuntu)) | E02 |
-| 172.17.0.4 | 22/tcp | OpenSSH 7.9p1 Debian 10+deb10u4 | E03 |
-| 172.17.0.4 | 8009/tcp | Apache Jserv (Protocol v1.3) | E03 |
-| 172.17.0.4 | 8080/tcp | Apache Tomcat 9.0.30 | E03 |
-| 172.17.0.5 | 80/tcp | Apache httpd 2.4.59 ((Debian)) | E04 |
-| 172.17.0.5 | 443/tcp | Apache httpd 2.4.59 ((Debian)) | E04 |
-| 172.17.0.5 | 1883/tcp | mqtt | E04 |
-| 172.17.0.5 | 5672/tcp | amqp | E04 |
-| 172.17.0.5 | 8161/tcp | Jetty 9.4.39.v20210325 | E04 |
-| 172.17.0.5 | 40833/tcp | tcpwrapped | E04 |
-| 172.17.0.5 | 61613/tcp | Apache ActiveMQ | E04 |
-| 172.17.0.5 | 61614/tcp | Jetty 9.4.39.v20210325 | E04 |
-| 172.17.0.5 | 61616/tcp | ActiveMQ OpenWire transport 5.15.15 | E04 |
-| 172.17.0.6 | 22/tcp | OpenSSH 9.2p1 Debian 2+deb12u2 | E05 |
-| 172.17.0.6 | 8080/tcp | Jetty 10.0.18 | E05 |
-| 172.17.0.7 | 22/tcp | OpenSSH 7.7 | E06 |
-| 172.17.0.8 | 22/tcp | OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 | E07 |
-| 172.17.0.8 | 80/tcp | Apache httpd 2.4.58 ((Ubuntu)) | E07 |
-| 172.17.0.8 | 139/tcp | Samba smbd 4 | E07 |
-| 172.17.0.8 | 445/tcp | Samba smbd 4 | E07 |
-| 172.17.0.9 | 22/tcp | OpenSSH 9.2p1 Debian 2+deb12u10 | E08 |
-| 172.17.0.9 | 80/tcp | Apache httpd 2.4.68 ((Debian)) | E08 |
-| 172.17.0.10 | 80/tcp | SimpleHTTPServer 0.6 (Python 3.11.2) | E09 |
-
-## 3. Vulnerabilidades potenciales priorizadas
-
-Fecha de la consulta: 2026-11-25 (EPSS y KEV cambian a diario).
-
-| # | Hallazgo | Equipo y servicio | CVSS (versión) | EPSS | KEV | CWE | Nivel de evidencia | Evidencia |
-|---|---|---|---|---|---|---|---|---|
-| 1 | CVE-2023-46604 | 172.17.0.5 · 61616/tcp ActiveMQ OpenWire transport 5.15.15 | 9.8 (3.1) | 1.000 | desde 2023-11-02 · ransomware | CWE-502 | potencial (solo versión) | E19 |
-| 2 | CVE-2024-38475 | 172.17.0.3 · 80/tcp Apache httpd 2.4.58 | 9.1 (3.1) | 1.000 | desde 2025-05-01 | CWE-116 | potencial (solo versión) | E12 |
-| 3 | CVE-2023-44487 | 172.17.0.4 · 8080/tcp Apache Tomcat 9.0.30 | 7.5 (3.1) | 1.000 | desde 2023-10-10 | CWE-400 | potencial (solo versión) | E14 |
-| 4 | CVE-2025-24813 | 172.17.0.4 · 8080/tcp Apache Tomcat 9.0.30 | 9.8 (3.1) | 0.999 | desde 2025-04-01 | CWE-44, CWE-502, CWE-706 | potencial (solo versión) | E14 |
-| 5 | CVE-2017-7494 | 172.17.0.8 · 139/tcp Samba smbd 4 | 9.8 (3.1) | 0.994 | desde 2023-03-30 · ransomware | CWE-94 | potencial (solo versión) | E25 |
-| 6 | CVE-2020-1472 | 172.17.0.8 · 139/tcp Samba smbd 4 | 5.5 (3.1) | 0.994 | desde 2021-11-03 · ransomware | sin dato | potencial (solo versión) | E25 |
-| 7 | CVE-2020-1938 | 172.17.0.4 · 8080/tcp Apache Tomcat 9.0.30 | 9.8 (3.1) | 0.993 | desde 2022-03-03 | sin dato | potencial (solo versión) | E14 |
-| 8 | CVE-2026-34197 | 172.17.0.5 · 61616/tcp ActiveMQ OpenWire transport 5.15.15 | 8.8 (3.1) | 0.983 | desde 2026-04-16 | CWE-20, CWE-78, CWE-94 | potencial (solo versión) | E19 |
-| 9 | CVE-2026-123158 | 172.17.0.4 · 22/tcp OpenSSH 7.9p1 | 8.1 (3.1) | 0.955 | desde 2026-11-09 | CWE-394 | potencial (solo versión) | E13 |
-| 10 | CVE-2024-6387 | 172.17.0.6 · 22/tcp OpenSSH 9.2p1 | 8.1 (3.1) | 0.995 | no | CWE-362, CWE-364 | potencial (solo versión) | E20 |
-
-**Justificación del orden:**
-
-1. **CVE-2023-46604**: En KEV desde 2023-11-02 con ransomware confirmado; EPSS 1.000, CVSS 9.8.
-2. **CVE-2024-38475**: En KEV desde 2025-05-01; EPSS 1.000, CVSS 9.1.
-3. **CVE-2023-44487**: En KEV desde 2023-10-10; EPSS 1.000, CVSS 7.5.
-4. **CVE-2025-24813**: En KEV desde 2025-04-01; EPSS 0.999, CVSS 9.8.
-5. **CVE-2017-7494**: En KEV desde 2023-03-30 con ransomware confirmado; EPSS 0.994, CVSS 9.8.
-6. **CVE-2020-1472**: En KEV desde 2021-11-03 con ransomware confirmado; EPSS 0.994, CVSS 5.5.
-7. **CVE-2020-1938**: En KEV desde 2022-03-03; EPSS 0.993, CVSS 9.8.
-8. **CVE-2026-34197**: En KEV desde 2026-04-16; EPSS 0.983, CVSS 8.8.
-9. **CVE-2026-123158**: En KEV desde 2026-11-09; EPSS 0.955, CVSS 8.1.
-10. **CVE-2024-6387**: No en KEV; EPSS 0.995, CVSS 8.1 — mayor EPSS entre las vulnerabilidades fuera de KEV.
-
-## 4. A verificar
-
-- **Versiones con posible backport (Debian/Ubuntu):** Apache httpd 2.4.58 ((Ubuntu)) en 172.17.0.3 y 172.17.0.8; Apache httpd 2.4.59 ((Debian)) en 172.17.0.5; OpenSSH 7.9p1 Debian 10+deb10u4 en 172.17.0.4; OpenSSH 9.2p1 Debian 2+deb12u2 en 172.17.0.6; OpenSSH 9.2p1 Debian 2+deb12u10 en 172.17.0.9; OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 en 172.17.0.8; OpenSSH 10.3p1 Debian 5 en 172.17.0.1; Apache httpd 2.4.68 ((Debian)) en 172.17.0.9. Estos sistemas podrían tener parches retroportados que no reflejan la versión upstream.
-- **Búsquedas por palabras clave (más ruido):** vsftpd 2.3.4 (E11), Jetty 9.4.39.v20210325 (E17, E18), Jetty 10.0.18 (E21), SimpleHTTPServer 0.6 (E29). Las coincidencias pueden incluir CVE de versiones vecinas.
-- **Servicios sin versión detectada:** 172.17.0.4:8009 (Apache Jserv), 172.17.0.5:1883 (mqtt), 172.17.0.5:5672 (amqp), 172.17.0.5:40833 (tcpwrapped), 172.17.0.5:61613 (Apache ActiveMQ). Sin versión no fue posible buscar CVE con precisión.
-- **Consultas sin CVE encontrados:** Jetty 9.4.39.v20210325 (E17, E18), Jetty 10.0.18 (E21), SimpleHTTPServer 0.6 (E29), Apache Jserv (E31). No encontrar CVE no demuestra que el servicio sea seguro; puede deberse a limitaciones del método de búsqueda por palabras clave o a un CPE no reconocido.
+{
+  "t": 1795598683.253,
+  "tipo": "inicio",
+  "objetivo": "Enumera la red interna autorizada en tu alcance: equipos, servicios y vulnerabilidades potenciales. Termina con el informe.",
+  "modelo": "corsario-1",
+  "herramientas": [
+    "nmap_descubrir",
+    "nmap_servicios",
+    "cve_lookup"
+  ]
+}
+{
+  "t": 1795598688.832,
+  "tipo": "herramienta",
+  "paso": 1,
+  "nombre": "nmap_descubrir",
+  "argumentos": "{\"red\": \"172.17.0.0/24\"}",
+  "resultado": "Red 172.17.0.0/24: 9 equipos vivos.\n  - 172.17.0.3\n  - 172.17.0.4\n  - 172.17.0.5\n  - 172.17.0.6\n  - 172.17.0.7\n  - 172.17.0.8\n  - 172.17.0.9\n  - 172.17.0.10\n  - 172.17.0.1\nEvidencia: E01 (salida/ejecuciones/2026-11-25_092443/evidencias/E01-nmap_descubrir-172.17.0.0_24.xml)",
+  "bloqueado": false
+}
+{
+  "t": 1795598709.143,
+  "tipo": "herramienta",
+  "paso": 2,
+  "nombre": "nmap_servicios",
+  "argumentos": "{\"host\": \"172.17.0.3\"}",
+  "resultado": "172.17.0.3: 2 servicios abiertos.\n  - 21/tcp ftp · vsftpd 2.3.4\n  - 80/tcp http · Apache httpd 2.4.58 ((Ubuntu))\nEvidencia: E02 (salida/ejecuciones/2026-11-25_092443/evidencias/E02-nmap_servicios-172.17.0.3.xml)",
+  "bloqueado": false
+}
+{
+  "t": 1795598716.652,
+  "tipo": "herramienta",
+  "paso": 2,
+  "nombre": "nmap_servicios",
+  "argumentos": "{\"host\": \"172.17.0.4\"}",
+  "resultado": "172.17.0.4: 3 servicios abiertos.\n  - 22/tcp ssh · OpenSSH 7.9p1 Debian 10+deb10u4 (protocol 2.0)\n  - 8009/tcp ajp13 · Apache Jserv (Protocol v1.3)\n  - 8080/tcp http · Apache Tomcat 9.0.30\nEvidencia: E03 (salida/ejecuciones/2026-11-25_092443/evidencias/E03-nmap_servicios-172.17.0.4.xml)",
+  "bloqueado": false
+}
+{
+  "t": 1795598748.814,
+  "tipo": "herramienta",
+  "paso": 2,
+  "nombre": "nmap_servicios",
+  "argumentos": "{\"host\": \"172.17.0.5\"}",
+  "resultado": "172.17.0.5: 9 servicios abiertos.\n  - 80/tcp http · Apache httpd 2.4.59 ((Debian))\n  - 443/tcp http · Apache httpd 2.4.59 ((Debian))\n  - 1883/tcp mqtt\n  - 5672/tcp amqp\n  - 8161/tcp http · Jetty 9.4.39.v20210325\n  - 40833/tcp tcpwrapped\n  - 61613/tcp stomp · Apache ActiveMQ\n  - 61614/tcp http · Jetty 9.4.39.v20210325\n  - 61616/tcp apachemq · ActiveMQ OpenWire transport 5.15.15\nEvidencia: E04 (salida/ejecuciones/2026-11-25_092443/evidencias/E04-nmap_servicios-172.17.0.5.xml)",
+  "bloqueado": false
+}
+{
+  "t": 1795598756.845,
+  "tipo": "herramienta",
+  "paso": 2,
+  "nombre": "nmap_servicios",
+  "argumentos": "{\"host\": \"172.17.0.6\"}",
+  "resultado": "172.17.0.6: 2 servicios abiertos.\n  - 22/tcp ssh · OpenSSH 9.2p1 Debian 2+deb12u2 (protocol 2.0)\n  - 8080/tcp http · Jetty 10.0.18\nEvidencia: E05 (salida/ejecuciones/2026-11-25_092443/evidencias/E05-nmap_servicios-172.17.0.6.xml)",
+  "bloqueado": false
+}
+{
+  "t": 1795598758.121,
+  "tipo": "herramienta",
+  "paso": 2,
+  "nombre": "nmap_servicios",
+  "argumentos": "{\"host\": \"172.17.0.7\"}",
+  "resultado": "172.17.0.7: 1 servicios abiertos.\n  - 22/tcp ssh · OpenSSH 7.7 (protocol 2.0)\nEvidencia: E06 (salida/ejecuciones/2026-11-25_092443/evidencias/E06-nmap_servicios-172.17.0.7.xml)",
+  "bloqueado": false
+}
+{
+  "t": 1795598770.432,
+  "tipo": "herramienta",
+  "paso": 2,
+  "nombre": "nmap_servicios",
+  "argumentos": "{\"host\": \"172.17.0.8\"}",
+  "resultado": "172.17.0.8: 4 servicios abiertos.\n  - 22/tcp ssh · OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 (Ubuntu Linux; protocol 2.0)\n  - 80/tcp http · Apache httpd 2.4.58 ((Ubuntu))\n  - 139/tcp netbios-ssn · Samba smbd 4\n  - 445/tcp netbios-ssn · Samba smbd 4\nEvidencia: E07 (salida/ejecuciones/2026-11-25_092443/evidencias/E07-nmap_servicios-172.17.0.8.xml)",
+  "bloqueado": false
+}
+{
+  "t": 1795598777.729,
+  "tipo": "herramienta",
+  "paso": 2,
+  "nombre": "nmap_servicios",
+  "argumentos": "{\"host\": \"172.17.0.9\"}",
+  "resultado": "172.17.0.9: 2 servicios abiertos.\n  - 22/tcp ssh · OpenSSH 9.2p1 Debian 2+deb12u10 (protocol 2.0)\n  - 80/tcp http · Apache httpd 2.4.68 ((Debian))\nEvidencia: E08 (salida/ejecuciones/2026-11-25_092443/evidencias/E08-nmap_servicios-172.17.0.9.xml)",
+  "bloqueado": false
+}
+{
+  "t": 1795598785.047,
+  "tipo": "herramienta",
+  "paso": 2,
+  "nombre": "nmap_servicios",
+  "argumentos": "{\"host\": \"172.17.0.10\"}",
+  "resultado": "172.17.0.10: 1 servicios abiertos.\n  - 80/tcp http · SimpleHTTPServer 0.6 (Python 3.11.2)\nEvidencia: E09 (salida/ejecuciones/2026-11-25_092443/evidencias/E09-nmap_servicios-172.17.0.10.xml)",
+  "bloqueado": false
+}
+{
+  "t": 1795598786.438,
+  "tipo": "herramienta",
+  "paso": 2,
+  "nombre": "nmap_servicios",
+  "argumentos": "{\"host\": \"172.17.0.1\"}",
+  "resultado": "172.17.0.1: 1 servicios abiertos.\n  - 22/tcp ssh · OpenSSH 10.3p1 Debian 5 (protocol 2.0)\nEvidencia: E10 (salida/ejecuciones/2026-11-25_092443/evidencias/E10-nmap_servicios-172.17.0.1.xml)",
+  "bloqueado": false
+}
+{
+  "t": 1795598932.595,
+  "tipo": "herramienta",
+  "paso": 3,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.3\", \"puerto\": 21}",
+  "resultado": "Servicio: 21/tcp ftp · vsftpd 2.3.4 en 172.17.0.3:21\nBúsqueda: NVD por palabras clave «vsftpd 2.3.4» (más ruido)\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n1 CVE candidatos; los 1 primeros:\n  - CVE-2011-2523 · CVSS 9.8 (3.1) · EPSS 0.962 · KEV: no · CWE-78\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E11 (salida/ejecuciones/2026-11-25_092443/evidencias/E11-cve_lookup-172.17.0.3_21.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795598949.741,
+  "tipo": "herramienta",
+  "paso": 3,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.3\", \"puerto\": 80}",
+  "resultado": "Servicio: 80/tcp http · Apache httpd 2.4.58 ((Ubuntu)) en 172.17.0.3:80\nBúsqueda: NVD por CPE cpe:2.3:a:apache:http_server:2.4.58\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n68 CVE candidatos; los 8 primeros:\n  - CVE-2024-38475 · CVSS 9.1 (3.1) · EPSS 1.000 · KEV desde 2025-05-01 · ransomware: no consta · CWE-116\n  - CVE-2024-27316 · CVSS 7.5 (3.1) · EPSS 0.888 · KEV: no · CWE-770\n  - CVE-2024-38472 · CVSS 7.5 (3.1) · EPSS 0.695 · KEV: no · CWE-918\n  - CVE-2024-38476 · CVSS 9.8 (3.1) · EPSS 0.416 · KEV: no · CWE-829\n  - CVE-2024-39573 · CVSS 7.5 (3.1) · EPSS 0.354 · KEV: no · CWE-20\n  - CVE-2026-49975 · CVSS 7.5 (3.1) · EPSS 0.317 · KEV: no · CWE-409, CWE-789\n  - CVE-2024-38473 · CVSS 8.1 (3.1) · EPSS 0.259 · KEV: no · CWE-116\n  - CVE-2026-119618 · CVSS 8.1 (3.1) · EPSS 0.158 · KEV: no · CWE-362\n  ... y 60 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E12 (salida/ejecuciones/2026-11-25_092443/evidencias/E12-cve_lookup-172.17.0.3_80.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795598997.044,
+  "tipo": "herramienta",
+  "paso": 3,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.4\", \"puerto\": 22}",
+  "resultado": "Servicio: 22/tcp ssh · OpenSSH 7.9p1 Debian 10+deb10u4 (protocol 2.0) en 172.17.0.4:22\nBúsqueda: NVD por CPE cpe:2.3:a:openbsd:openssh:7.9p1\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n35 CVE candidatos; los 8 primeros:\n  - CVE-2026-123158 · CVSS 8.1 (3.1) · EPSS 0.955 · KEV desde 2026-11-09 · ransomware: no consta · CWE-394\n  - CVE-2023-48795 · CVSS 5.9 (3.1) · EPSS 0.935 · KEV: no · CWE-354\n  - CVE-2023-38408 · CVSS 9.8 (3.1) · EPSS 0.797 · KEV: no · CWE-428\n  - CVE-2023-51385 · CVSS 6.5 (3.1) · EPSS 0.198 · KEV: no · CWE-78\n  - CVE-2020-15778 · CVSS 7.4 (3.1) · EPSS 0.137 · KEV: no · CWE-78\n  - CVE-2025-26465 · CVSS 6.8 (3.1) · EPSS 0.101 · KEV: no · CWE-390\n  - CVE-2016-20012 · CVSS 5.3 (3.1) · EPSS 0.053 · KEV: no · CWE-203\n  - CVE-2020-14145 · CVSS 5.9 (3.1) · EPSS 0.029 · KEV: no · CWE-203\n  ... y 27 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E13 (salida/ejecuciones/2026-11-25_092443/evidencias/E13-cve_lookup-172.17.0.4_22.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599004.526,
+  "tipo": "herramienta",
+  "paso": 3,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.4\", \"puerto\": 8080}",
+  "resultado": "Servicio: 8080/tcp http · Apache Tomcat 9.0.30 en 172.17.0.4:8080\nBúsqueda: NVD por CPE cpe:2.3:a:apache:tomcat:9.0.30\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n77 CVE candidatos; los 8 primeros:\n  - CVE-2023-44487 · CVSS 7.5 (3.1) · EPSS 1.000 · KEV desde 2023-10-10 · ransomware: no consta · CWE-400\n  - CVE-2025-24813 · CVSS 9.8 (3.1) · EPSS 0.999 · KEV desde 2025-04-01 · ransomware: no consta · CWE-44, CWE-502, CWE-706\n  - CVE-2020-1938 · CVSS 9.8 (3.1) · EPSS 0.993 · KEV desde 2022-03-03 · ransomware: no consta\n  - CVE-2020-13935 · CVSS 7.5 (3.1) · EPSS 0.866 · KEV: no · CWE-835\n  - CVE-2021-33037 · CVSS 5.3 (3.1) · EPSS 0.747 · KEV: no · CWE-444\n  - CVE-2022-29885 · CVSS 7.5 (3.1) · EPSS 0.735 · KEV: no · CWE-400\n  - CVE-2020-13934 · CVSS 7.5 (3.1) · EPSS 0.641 · KEV: no · CWE-401, CWE-476\n  - CVE-2020-9484 · CVSS 7.0 (3.1) · EPSS 0.555 · KEV: no · CWE-502\n  ... y 69 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E14 (salida/ejecuciones/2026-11-25_092443/evidencias/E14-cve_lookup-172.17.0.4_8080.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599011.535,
+  "tipo": "herramienta",
+  "paso": 3,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.5\", \"puerto\": 80}",
+  "resultado": "Servicio: 80/tcp http · Apache httpd 2.4.59 ((Debian)) en 172.17.0.5:80\nBúsqueda: NVD por CPE cpe:2.3:a:apache:http_server:2.4.59\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n65 CVE candidatos; los 8 primeros:\n  - CVE-2024-38475 · CVSS 9.1 (3.1) · EPSS 1.000 · KEV desde 2025-05-01 · ransomware: no consta · CWE-116\n  - CVE-2024-38472 · CVSS 7.5 (3.1) · EPSS 0.695 · KEV: no · CWE-918\n  - CVE-2024-38476 · CVSS 9.8 (3.1) · EPSS 0.416 · KEV: no · CWE-829\n  - CVE-2024-39573 · CVSS 7.5 (3.1) · EPSS 0.354 · KEV: no · CWE-20\n  - CVE-2026-49975 · CVSS 7.5 (3.1) · EPSS 0.317 · KEV: no · CWE-409, CWE-789\n  - CVE-2024-38473 · CVSS 8.1 (3.1) · EPSS 0.259 · KEV: no · CWE-116\n  - CVE-2026-119618 · CVSS 8.1 (3.1) · EPSS 0.158 · KEV: no · CWE-362\n  - CVE-2025-53020 · CVSS 7.5 (3.1) · EPSS 0.050 · KEV: no · CWE-401\n  ... y 57 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E15 (salida/ejecuciones/2026-11-25_092443/evidencias/E15-cve_lookup-172.17.0.5_80.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599017.416,
+  "tipo": "herramienta",
+  "paso": 3,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.5\", \"puerto\": 443}",
+  "resultado": "Servicio: 443/tcp http · Apache httpd 2.4.59 ((Debian)) en 172.17.0.5:443\nBúsqueda: NVD por CPE cpe:2.3:a:apache:http_server:2.4.59\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n65 CVE candidatos; los 8 primeros:\n  - CVE-2024-38475 · CVSS 9.1 (3.1) · EPSS 1.000 · KEV desde 2025-05-01 · ransomware: no consta · CWE-116\n  - CVE-2024-38472 · CVSS 7.5 (3.1) · EPSS 0.695 · KEV: no · CWE-918\n  - CVE-2024-38476 · CVSS 9.8 (3.1) · EPSS 0.416 · KEV: no · CWE-829\n  - CVE-2024-39573 · CVSS 7.5 (3.1) · EPSS 0.354 · KEV: no · CWE-20\n  - CVE-2026-49975 · CVSS 7.5 (3.1) · EPSS 0.317 · KEV: no · CWE-409, CWE-789\n  - CVE-2024-38473 · CVSS 8.1 (3.1) · EPSS 0.259 · KEV: no · CWE-116\n  - CVE-2026-119618 · CVSS 8.1 (3.1) · EPSS 0.158 · KEV: no · CWE-362\n  - CVE-2025-53020 · CVSS 7.5 (3.1) · EPSS 0.050 · KEV: no · CWE-401\n  ... y 57 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E16 (salida/ejecuciones/2026-11-25_092443/evidencias/E16-cve_lookup-172.17.0.5_443.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599070.126,
+  "tipo": "herramienta",
+  "paso": 3,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.5\", \"puerto\": 8161}",
+  "resultado": "Servicio: 8161/tcp http · Jetty 9.4.39.v20210325 en 172.17.0.5:8161\nBúsqueda: NVD por palabras clave «Jetty 9.4.39.v20210325» (más ruido)\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\nNo se encontraron CVE candidatos con este método. Eso no demuestra que el servicio sea seguro.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E17 (salida/ejecuciones/2026-11-25_092443/evidencias/E17-cve_lookup-172.17.0.5_8161.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599104.015,
+  "tipo": "herramienta",
+  "paso": 3,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.5\", \"puerto\": 61614}",
+  "resultado": "Servicio: 61614/tcp http · Jetty 9.4.39.v20210325 en 172.17.0.5:61614\nBúsqueda: NVD por palabras clave «Jetty 9.4.39.v20210325» (más ruido)\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\nNo se encontraron CVE candidatos con este método. Eso no demuestra que el servicio sea seguro.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E18 (salida/ejecuciones/2026-11-25_092443/evidencias/E18-cve_lookup-172.17.0.5_61614.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599110.787,
+  "tipo": "herramienta",
+  "paso": 3,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.5\", \"puerto\": 61616}",
+  "resultado": "Servicio: 61616/tcp apachemq · ActiveMQ OpenWire transport 5.15.15 en 172.17.0.5:61616\nBúsqueda: NVD por CPE cpe:2.3:a:apache:activemq:5.15.15\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n26 CVE candidatos; los 8 primeros:\n  - CVE-2023-46604 · CVSS 9.8 (3.1) · EPSS 1.000 · KEV desde 2023-11-02 · ransomware: sí · CWE-502\n  - CVE-2026-34197 · CVSS 8.8 (3.1) · EPSS 0.983 · KEV desde 2026-04-16 · ransomware: no consta · CWE-20, CWE-78, CWE-94\n  - CVE-2022-41678 · CVSS 8.8 (3.1) · EPSS 0.867 · KEV: no · CWE-287\n  - CVE-2026-40466 · CVSS 8.8 (3.1) · EPSS 0.048 · KEV: no · CWE-20, CWE-94\n  - CVE-2026-42253 · CVSS 6.1 (3.1) · EPSS 0.010 · KEV: no · CWE-79\n  - CVE-2026-41044 · CVSS 8.8 (3.1) · EPSS 0.010 · KEV: no · CWE-20, CWE-94\n  - CVE-2026-39304 · CVSS 7.5 (3.1) · EPSS 0.009 · KEV: no · CWE-400, CWE-770\n  - CVE-2025-66168 · CVSS 8.8 (3.1) · EPSS 0.009 · KEV: no · CWE-190\n  ... y 18 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E19 (salida/ejecuciones/2026-11-25_092443/evidencias/E19-cve_lookup-172.17.0.5_61616.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599250.297,
+  "tipo": "herramienta",
+  "paso": 3,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.6\", \"puerto\": 22}",
+  "resultado": "Servicio: 22/tcp ssh · OpenSSH 9.2p1 Debian 2+deb12u2 (protocol 2.0) en 172.17.0.6:22\nBúsqueda: NVD por CPE cpe:2.3:a:openbsd:openssh:9.2p1\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n33 CVE candidatos; los 8 primeros:\n  - CVE-2026-123158 · CVSS 8.1 (3.1) · EPSS 0.955 · KEV desde 2026-11-09 · ransomware: no consta · CWE-394\n  - CVE-2024-6387 · CVSS 8.1 (3.1) · EPSS 0.995 · KEV: no · CWE-362, CWE-364\n  - CVE-2023-48795 · CVSS 5.9 (3.1) · EPSS 0.935 · KEV: no · CWE-354\n  - CVE-2023-38408 · CVSS 9.8 (3.1) · EPSS 0.797 · KEV: no · CWE-428\n  - CVE-2023-51385 · CVSS 6.5 (3.1) · EPSS 0.198 · KEV: no · CWE-78\n  - CVE-2025-26465 · CVSS 6.8 (3.1) · EPSS 0.101 · KEV: no · CWE-390\n  - CVE-2023-28531 · CVSS 9.8 (3.1) · EPSS 0.030 · KEV: no · CWE-284\n  - CVE-2026-60000 · CVSS 7.5 (3.1) · EPSS 0.006 · KEV: no · CWE-770\n  ... y 25 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E20 (salida/ejecuciones/2026-11-25_092443/evidencias/E20-cve_lookup-172.17.0.6_22.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599286.408,
+  "tipo": "herramienta",
+  "paso": 4,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.6\", \"puerto\": 8080}",
+  "resultado": "Servicio: 8080/tcp http · Jetty 10.0.18 en 172.17.0.6:8080\nBúsqueda: NVD por palabras clave «Jetty 10.0.18» (más ruido)\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\nNo se encontraron CVE candidatos con este método. Eso no demuestra que el servicio sea seguro.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E21 (salida/ejecuciones/2026-11-25_092443/evidencias/E21-cve_lookup-172.17.0.6_8080.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599293.653,
+  "tipo": "herramienta",
+  "paso": 4,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.7\", \"puerto\": 22}",
+  "resultado": "Servicio: 22/tcp ssh · OpenSSH 7.7 (protocol 2.0) en 172.17.0.7:22\nBúsqueda: NVD por CPE cpe:2.3:a:openbsd:openssh:7.7\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n42 CVE candidatos; los 8 primeros:\n  - CVE-2026-123158 · CVSS 8.1 (3.1) · EPSS 0.955 · KEV desde 2026-11-09 · ransomware: no consta · CWE-394\n  - CVE-2018-15473 · CVSS 5.3 (3.1) · EPSS 0.987 · KEV: no · CWE-362\n  - CVE-2023-48795 · CVSS 5.9 (3.1) · EPSS 0.935 · KEV: no · CWE-354\n  - CVE-2023-38408 · CVSS 9.8 (3.1) · EPSS 0.797 · KEV: no · CWE-428\n  - CVE-2019-6111 · CVSS 5.9 (3.1) · EPSS 0.582 · KEV: no · CWE-22\n  - CVE-2019-6110 · CVSS 6.8 (3.1) · EPSS 0.249 · KEV: no · CWE-838\n  - CVE-2023-51385 · CVSS 6.5 (3.1) · EPSS 0.198 · KEV: no · CWE-78\n  - CVE-2020-15778 · CVSS 7.4 (3.1) · EPSS 0.137 · KEV: no · CWE-78\n  ... y 34 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E22 (salida/ejecuciones/2026-11-25_092443/evidencias/E22-cve_lookup-172.17.0.7_22.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599336.897,
+  "tipo": "herramienta",
+  "paso": 4,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.8\", \"puerto\": 22}",
+  "resultado": "Servicio: 22/tcp ssh · OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 (Ubuntu Linux; protocol 2.0) en 172.17.0.8:22\nBúsqueda: NVD por CPE cpe:2.3:a:openbsd:openssh:9.6p1\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n28 CVE candidatos; los 8 primeros:\n  - CVE-2026-123158 · CVSS 8.1 (3.1) · EPSS 0.955 · KEV desde 2026-11-09 · ransomware: no consta · CWE-394\n  - CVE-2024-6387 · CVSS 8.1 (3.1) · EPSS 0.995 · KEV: no · CWE-362, CWE-364\n  - CVE-2025-26465 · CVSS 6.8 (3.1) · EPSS 0.101 · KEV: no · CWE-390\n  - CVE-2026-60000 · CVSS 7.5 (3.1) · EPSS 0.006 · KEV: no · CWE-770\n  - CVE-2026-35385 · CVSS 8.1 (3.1) · EPSS 0.006 · KEV: no · CWE-281\n  - CVE-2026-106552 · CVSS 6.5 (3.1) · EPSS 0.004 · KEV: no · CWE-23\n  - CVE-2026-60002 · CVSS 9.4 (3.1) · EPSS 0.003 · KEV: no · CWE-416\n  - CVE-2026-60001 · CVSS 6.5 (3.1) · EPSS 0.003 · KEV: no · CWE-770\n  ... y 20 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E23 (salida/ejecuciones/2026-11-25_092443/evidencias/E23-cve_lookup-172.17.0.8_22.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599343.458,
+  "tipo": "herramienta",
+  "paso": 4,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.8\", \"puerto\": 80}",
+  "resultado": "Servicio: 80/tcp http · Apache httpd 2.4.58 ((Ubuntu)) en 172.17.0.8:80\nBúsqueda: NVD por CPE cpe:2.3:a:apache:http_server:2.4.58\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n68 CVE candidatos; los 8 primeros:\n  - CVE-2024-38475 · CVSS 9.1 (3.1) · EPSS 1.000 · KEV desde 2025-05-01 · ransomware: no consta · CWE-116\n  - CVE-2024-27316 · CVSS 7.5 (3.1) · EPSS 0.888 · KEV: no · CWE-770\n  - CVE-2024-38472 · CVSS 7.5 (3.1) · EPSS 0.695 · KEV: no · CWE-918\n  - CVE-2024-38476 · CVSS 9.8 (3.1) · EPSS 0.416 · KEV: no · CWE-829\n  - CVE-2024-39573 · CVSS 7.5 (3.1) · EPSS 0.354 · KEV: no · CWE-20\n  - CVE-2026-49975 · CVSS 7.5 (3.1) · EPSS 0.317 · KEV: no · CWE-409, CWE-789\n  - CVE-2024-38473 · CVSS 8.1 (3.1) · EPSS 0.259 · KEV: no · CWE-116\n  - CVE-2026-119618 · CVSS 8.1 (3.1) · EPSS 0.158 · KEV: no · CWE-362\n  ... y 60 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E24 (salida/ejecuciones/2026-11-25_092443/evidencias/E24-cve_lookup-172.17.0.8_80.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599350.069,
+  "tipo": "herramienta",
+  "paso": 4,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.8\", \"puerto\": 139}",
+  "resultado": "Servicio: 139/tcp netbios-ssn · Samba smbd 4 en 172.17.0.8:139\nBúsqueda: NVD por CPE cpe:2.3:a:samba:samba:4\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n44 CVE candidatos; los 8 primeros:\n  - CVE-2017-7494 · CVSS 9.8 (3.1) · EPSS 0.994 · KEV desde 2023-03-30 · ransomware: sí · CWE-94\n  - CVE-2020-1472 · CVSS 5.5 (3.1) · EPSS 0.994 · KEV desde 2021-11-03 · ransomware: sí\n  - CVE-2021-44142 · CVSS 8.8 (3.1) · EPSS 0.736 · KEV: no · CWE-125, CWE-787\n  - CVE-2023-34966 · CVSS 7.5 (3.1) · EPSS 0.621 · KEV: no · CWE-835\n  - CVE-2023-34967 · CVSS 5.3 (3.1) · EPSS 0.609 · KEV: no · CWE-843\n  - CVE-2016-2118 · CVSS 7.5 (3.1) · EPSS 0.372 · KEV: no · CWE-254\n  - CVE-2017-15275 · CVSS 7.5 (3.1) · EPSS 0.214 · KEV: no · CWE-119\n  - CVE-2015-5299 · CVSS 5.3 (3.1) · EPSS 0.136 · KEV: no · CWE-200\n  ... y 36 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E25 (salida/ejecuciones/2026-11-25_092443/evidencias/E25-cve_lookup-172.17.0.8_139.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599356.587,
+  "tipo": "herramienta",
+  "paso": 4,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.8\", \"puerto\": 445}",
+  "resultado": "Servicio: 445/tcp netbios-ssn · Samba smbd 4 en 172.17.0.8:445\nBúsqueda: NVD por CPE cpe:2.3:a:samba:samba:4\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n44 CVE candidatos; los 8 primeros:\n  - CVE-2017-7494 · CVSS 9.8 (3.1) · EPSS 0.994 · KEV desde 2023-03-30 · ransomware: sí · CWE-94\n  - CVE-2020-1472 · CVSS 5.5 (3.1) · EPSS 0.994 · KEV desde 2021-11-03 · ransomware: sí\n  - CVE-2021-44142 · CVSS 8.8 (3.1) · EPSS 0.736 · KEV: no · CWE-125, CWE-787\n  - CVE-2023-34966 · CVSS 7.5 (3.1) · EPSS 0.621 · KEV: no · CWE-835\n  - CVE-2023-34967 · CVSS 5.3 (3.1) · EPSS 0.609 · KEV: no · CWE-843\n  - CVE-2016-2118 · CVSS 7.5 (3.1) · EPSS 0.372 · KEV: no · CWE-254\n  - CVE-2017-15275 · CVSS 7.5 (3.1) · EPSS 0.214 · KEV: no · CWE-119\n  - CVE-2015-5299 · CVSS 5.3 (3.1) · EPSS 0.136 · KEV: no · CWE-200\n  ... y 36 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E26 (salida/ejecuciones/2026-11-25_092443/evidencias/E26-cve_lookup-172.17.0.8_445.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599363.083,
+  "tipo": "herramienta",
+  "paso": 4,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.9\", \"puerto\": 22}",
+  "resultado": "Servicio: 22/tcp ssh · OpenSSH 9.2p1 Debian 2+deb12u10 (protocol 2.0) en 172.17.0.9:22\nBúsqueda: NVD por CPE cpe:2.3:a:openbsd:openssh:9.2p1\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n33 CVE candidatos; los 8 primeros:\n  - CVE-2026-123158 · CVSS 8.1 (3.1) · EPSS 0.955 · KEV desde 2026-11-09 · ransomware: no consta · CWE-394\n  - CVE-2024-6387 · CVSS 8.1 (3.1) · EPSS 0.995 · KEV: no · CWE-362, CWE-364\n  - CVE-2023-48795 · CVSS 5.9 (3.1) · EPSS 0.935 · KEV: no · CWE-354\n  - CVE-2023-38408 · CVSS 9.8 (3.1) · EPSS 0.797 · KEV: no · CWE-428\n  - CVE-2023-51385 · CVSS 6.5 (3.1) · EPSS 0.198 · KEV: no · CWE-78\n  - CVE-2025-26465 · CVSS 6.8 (3.1) · EPSS 0.101 · KEV: no · CWE-390\n  - CVE-2023-28531 · CVSS 9.8 (3.1) · EPSS 0.030 · KEV: no · CWE-284\n  - CVE-2026-60000 · CVSS 7.5 (3.1) · EPSS 0.006 · KEV: no · CWE-770\n  ... y 25 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E27 (salida/ejecuciones/2026-11-25_092443/evidencias/E27-cve_lookup-172.17.0.9_22.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599369.32,
+  "tipo": "herramienta",
+  "paso": 4,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.9\", \"puerto\": 80}",
+  "resultado": "Servicio: 80/tcp http · Apache httpd 2.4.68 ((Debian)) en 172.17.0.9:80\nBúsqueda: NVD por CPE cpe:2.3:a:apache:http_server:2.4.68\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n21 CVE candidatos; los 8 primeros:\n  - CVE-2026-119618 · CVSS 8.1 (3.1) · EPSS 0.158 · KEV: no · CWE-362\n  - CVE-2026-63292 · CVSS 7.5 (3.1) · EPSS 0.009 · KEV: no · CWE-121\n  - CVE-2026-56449 · CVSS 7.5 (3.1) · EPSS 0.007 · KEV: no · CWE-787\n  - CVE-2026-57941 · CVSS 9.8 (3.1) · EPSS 0.006 · KEV: no · CWE-416\n  - CVE-2026-93546 · CVSS 8.8 (3.1) · EPSS 0.006 · KEV: no · CWE-190\n  - CVE-2026-48005 · CVSS 7.5 (3.1) · EPSS 0.006 · KEV: no · CWE-306\n  - CVE-2026-63686 · CVSS 7.5 (3.1) · EPSS 0.006 · KEV: no · CWE-476\n  - CVE-2026-42528 · CVSS 4.3 (3.1) · EPSS 0.006 · KEV: no · CWE-789\n  ... y 13 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E28 (salida/ejecuciones/2026-11-25_092443/evidencias/E28-cve_lookup-172.17.0.9_80.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599382.226,
+  "tipo": "herramienta",
+  "paso": 4,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.10\", \"puerto\": 80}",
+  "resultado": "Servicio: 80/tcp http · SimpleHTTPServer 0.6 (Python 3.11.2) en 172.17.0.10:80\nBúsqueda: NVD por palabras clave «SimpleHTTPServer 0.6» (más ruido)\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\nNo se encontraron CVE candidatos con este método. Eso no demuestra que el servicio sea seguro.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E29 (salida/ejecuciones/2026-11-25_092443/evidencias/E29-cve_lookup-172.17.0.10_80.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599489.484,
+  "tipo": "herramienta",
+  "paso": 4,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.1\", \"puerto\": 22}",
+  "resultado": "Servicio: 22/tcp ssh · OpenSSH 10.3p1 Debian 5 (protocol 2.0) en 172.17.0.1:22\nBúsqueda: NVD por CPE cpe:2.3:a:openbsd:openssh:10.3p1\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\n21 CVE candidatos; los 8 primeros:\n  - CVE-2026-123158 · CVSS 8.1 (3.1) · EPSS 0.955 · KEV desde 2026-11-09 · ransomware: no consta · CWE-394\n  - CVE-2026-60000 · CVSS 7.5 (3.1) · EPSS 0.006 · KEV: no · CWE-770\n  - CVE-2026-106552 · CVSS 6.5 (3.1) · EPSS 0.004 · KEV: no · CWE-23\n  - CVE-2026-60002 · CVSS 9.4 (3.1) · EPSS 0.003 · KEV: no · CWE-416\n  - CVE-2026-60001 · CVSS 6.5 (3.1) · EPSS 0.003 · KEV: no · CWE-770\n  - CVE-2026-59995 · CVSS 5.4 (3.1) · EPSS 0.003 · KEV: no · CWE-23\n  - CVE-2026-59996 · CVSS 5.4 (3.1) · EPSS 0.003 · KEV: no · CWE-23\n  - CVE-2026-106585 · CVSS 6.5 (3.1) · EPSS 0.002 · KEV: no · CWE-409\n  ... y 13 más en la evidencia.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E30 (salida/ejecuciones/2026-11-25_092443/evidencias/E30-cve_lookup-172.17.0.1_22.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599578.207,
+  "tipo": "herramienta",
+  "paso": 5,
+  "nombre": "cve_lookup",
+  "argumentos": "{\"host\": \"172.17.0.4\", \"puerto\": 8009}",
+  "resultado": "Servicio: 8009/tcp ajp13 · Apache Jserv (Protocol v1.3) en 172.17.0.4:8009\nBúsqueda: sin CPE y sin versión clara: no se busca por palabras sueltas (traería CVE de cualquier versión)\nConsulta del 2026-11-25 (EPSS y KEV cambian a diario).\nNo se encontraron CVE candidatos con este método. Eso no demuestra que el servicio sea seguro.\nSon vulnerabilidades POTENCIALES: coincidir por producto y versión no demuestra que el servicio sea vulnerable (parches retroportados, configuración, versión mal detectada).\nEvidencia: E31 (salida/ejecuciones/2026-11-25_092443/evidencias/E31-cve_lookup-172.17.0.4_8009.json)",
+  "bloqueado": false
+}
+{
+  "t": 1795599632.545,
+  "tipo": "fin",
+  "paso": 6,
+  "informe": "\n\n# Informe de enumeración — Red 172.17.0.0/24\n\n## 1. Resumen ejecutivo\n\nSe identificaron 9 equipos activos en la red autorizada, ejecutando un total de 25 servicios TCP. Los riesgos más graves concentrados en tres servicios: Apache ActiveMQ 5.15.15 (172.17.0.5), Samba 4 (172.17.0.8) y Apache httpd 2.4.58/2.4.59 (172.17.0.3, 172.17.0.5, 172.17.0.8), todos con vulnerabilidades presentes en el catálogo KEV de CISA y, en el caso de ActiveMQ y Samba, con actividad de ransomware confirmada en campo. Se recomienda revisar con prioridad la exposición de ActiveMQ y Samba, y verificar si las versiones de Apache httpd y OpenSSH han sido parcheadas mediante backport en Debian/Ubuntu.\n\n## 2. Equipos y servicios\n\n| Equipo | Puerto | Servicio y versión | Evidencia |\n|---|---|---|---|\n| 172.17.0.1 | 22/tcp | OpenSSH 10.3p1 Debian 5 | E10 |\n| 172.17.0.3 | 21/tcp | vsftpd 2.3.4 | E02 |\n| 172.17.0.3 | 80/tcp | Apache httpd 2.4.58 ((Ubuntu)) | E02 |\n| 172.17.0.4 | 22/tcp | OpenSSH 7.9p1 Debian 10+deb10u4 | E03 |\n| 172.17.0.4 | 8009/tcp | Apache Jserv (Protocol v1.3) | E03 |\n| 172.17.0.4 | 8080/tcp | Apache Tomcat 9.0.30 | E03 |\n| 172.17.0.5 | 80/tcp | Apache httpd 2.4.59 ((Debian)) | E04 |\n| 172.17.0.5 | 443/tcp | Apache httpd 2.4.59 ((Debian)) | E04 |\n| 172.17.0.5 | 1883/tcp | mqtt | E04 |\n| 172.17.0.5 | 5672/tcp | amqp | E04 |\n| 172.17.0.5 | 8161/tcp | Jetty 9.4.39.v20210325 | E04 |\n| 172.17.0.5 | 40833/tcp | tcpwrapped | E04 |\n| 172.17.0.5 | 61613/tcp | Apache ActiveMQ | E04 |\n| 172.17.0.5 | 61614/tcp | Jetty 9.4.39.v20210325 | E04 |\n| 172.17.0.5 | 61616/tcp | ActiveMQ OpenWire transport 5.15.15 | E04 |\n| 172.17.0.6 | 22/tcp | OpenSSH 9.2p1 Debian 2+deb12u2 | E05 |\n| 172.17.0.6 | 8080/tcp | Jetty 10.0.18 | E05 |\n| 172.17.0.7 | 22/tcp | OpenSSH 7.7 | E06 |\n| 172.17.0.8 | 22/tcp | OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 | E07 |\n| 172.17.0.8 | 80/tcp | Apache httpd 2.4.58 ((Ubuntu)) | E07 |\n| 172.17.0.8 | 139/tcp | Samba smbd 4 | E07 |\n| 172.17.0.8 | 445/tcp | Samba smbd 4 | E07 |\n| 172.17.0.9 | 22/tcp | OpenSSH 9.2p1 Debian 2+deb12u10 | E08 |\n| 172.17.0.9 | 80/tcp | Apache httpd 2.4.68 ((Debian)) | E08 |\n| 172.17.0.10 | 80/tcp | SimpleHTTPServer 0.6 (Python 3.11.2) | E09 |\n\n## 3. Vulnerabilidades potenciales priorizadas\n\nFecha de la consulta: 2026-11-25 (EPSS y KEV cambian a diario).\n\n| # | Hallazgo | Equipo y servicio | CVSS (versión) | EPSS | KEV | CWE | Nivel de evidencia | Evidencia |\n|---|---|---|---|---|---|---|---|---|\n| 1 | CVE-2023-46604 | 172.17.0.5 · 61616/tcp ActiveMQ OpenWire transport 5.15.15 | 9.8 (3.1) | 1.000 | desde 2023-11-02 · ransomware | CWE-502 | potencial (solo versión) | E19 |\n| 2 | CVE-2024-38475 | 172.17.0.3 · 80/tcp Apache httpd 2.4.58 | 9.1 (3.1) | 1.000 | desde 2025-05-01 | CWE-116 | potencial (solo versión) | E12 |\n| 3 | CVE-2023-44487 | 172.17.0.4 · 8080/tcp Apache Tomcat 9.0.30 | 7.5 (3.1) | 1.000 | desde 2023-10-10 | CWE-400 | potencial (solo versión) | E14 |\n| 4 | CVE-2025-24813 | 172.17.0.4 · 8080/tcp Apache Tomcat 9.0.30 | 9.8 (3.1) | 0.999 | desde 2025-04-01 | CWE-44, CWE-502, CWE-706 | potencial (solo versión) | E14 |\n| 5 | CVE-2017-7494 | 172.17.0.8 · 139/tcp Samba smbd 4 | 9.8 (3.1) | 0.994 | desde 2023-03-30 · ransomware | CWE-94 | potencial (solo versión) | E25 |\n| 6 | CVE-2020-1472 | 172.17.0.8 · 139/tcp Samba smbd 4 | 5.5 (3.1) | 0.994 | desde 2021-11-03 · ransomware | sin dato | potencial (solo versión) | E25 |\n| 7 | CVE-2020-1938 | 172.17.0.4 · 8080/tcp Apache Tomcat 9.0.30 | 9.8 (3.1) | 0.993 | desde 2022-03-03 | sin dato | potencial (solo versión) | E14 |\n| 8 | CVE-2026-34197 | 172.17.0.5 · 61616/tcp ActiveMQ OpenWire transport 5.15.15 | 8.8 (3.1) | 0.983 | desde 2026-04-16 | CWE-20, CWE-78, CWE-94 | potencial (solo versión) | E19 |\n| 9 | CVE-2026-123158 | 172.17.0.4 · 22/tcp OpenSSH 7.9p1 | 8.1 (3.1) | 0.955 | desde 2026-11-09 | CWE-394 | potencial (solo versión) | E13 |\n| 10 | CVE-2024-6387 | 172.17.0.6 · 22/tcp OpenSSH 9.2p1 | 8.1 (3.1) | 0.995 | no | CWE-362, CWE-364 | potencial (solo versión) | E20 |\n\n**Justificación del orden:**\n\n1. **CVE-2023-46604**: En KEV desde 2023-11-02 con ransomware confirmado; EPSS 1.000, CVSS 9.8.\n2. **CVE-2024-38475**: En KEV desde 2025-05-01; EPSS 1.000, CVSS 9.1.\n3. **CVE-2023-44487**: En KEV desde 2023-10-10; EPSS 1.000, CVSS 7.5.\n4. **CVE-2025-24813**: En KEV desde 2025-04-01; EPSS 0.999, CVSS 9.8.\n5. **CVE-2017-7494**: En KEV desde 2023-03-30 con ransomware confirmado; EPSS 0.994, CVSS 9.8.\n6. **CVE-2020-1472**: En KEV desde 2021-11-03 con ransomware confirmado; EPSS 0.994, CVSS 5.5.\n7. **CVE-2020-1938**: En KEV desde 2022-03-03; EPSS 0.993, CVSS 9.8.\n8. **CVE-2026-34197**: En KEV desde 2026-04-16; EPSS 0.983, CVSS 8.8.\n9. **CVE-2026-123158**: En KEV desde 2026-11-09; EPSS 0.955, CVSS 8.1.\n10. **CVE-2024-6387**: No en KEV; EPSS 0.995, CVSS 8.1 — mayor EPSS entre las vulnerabilidades fuera de KEV.\n\n## 4. A verificar\n\n- **Versiones con posible backport (Debian/Ubuntu):** Apache httpd 2.4.58 ((Ubuntu)) en 172.17.0.3 y 172.17.0.8; Apache httpd 2.4.59 ((Debian)) en 172.17.0.5; OpenSSH 7.9p1 Debian 10+deb10u4 en 172.17.0.4; OpenSSH 9.2p1 Debian 2+deb12u2 en 172.17.0.6; OpenSSH 9.2p1 Debian 2+deb12u10 en 172.17.0.9; OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 en 172.17.0.8; OpenSSH 10.3p1 Debian 5 en 172.17.0.1; Apache httpd 2.4.68 ((Debian)) en 172.17.0.9. Estos sistemas podrían tener parches retroportados que no reflejan la versión upstream.\n- **Búsquedas por palabras clave (más ruido):** vsftpd 2.3.4 (E11), Jetty 9.4.39.v20210325 (E17, E18), Jetty 10.0.18 (E21), SimpleHTTPServer 0.6 (E29). Las coincidencias pueden incluir CVE de versiones vecinas.\n- **Servicios sin versión detectada:** 172.17.0.4:8009 (Apache Jserv), 172.17.0.5:1883 (mqtt), 172.17.0.5:5672 (amqp), 172.17.0.5:40833 (tcpwrapped), 172.17.0.5:61613 (Apache ActiveMQ). Sin versión no fue posible buscar CVE con precisión.\n- **Consultas sin CVE encontrados:** Jetty 9.4.39.v20210325 (E17, E18), Jetty 10.0.18 (E21), SimpleHTTPServer 0.6 (E29), Apache Jserv (E31). No encontrar CVE no demuestra que el servicio sea seguro; puede deberse a limitaciones del método de búsqueda por palabras clave o a un CPE no reconocido.",
+  "tokens": {
+    "entrada": 61043,
+    "salida": 13679
+  }
+}
