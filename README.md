@@ -27,7 +27,7 @@
 - **Trazas:**
   - **Jose Luis Reina:** https://github.com/IES-Rafael-Alberti/mapping-the-maze-grupo5/blob/main/agentes/jose-reina/trazas/traza.jsonl
   -
-  -
+  - **Carlos Luis Ramos García:** https://github.com/IES-Rafael-Alberti/mapping-the-maze-grupo5/tree/main/agentes/carlos-ramos-2/trazas
   -
   
 - **Comparativa:** https://github.com/IES-Rafael-Alberti/mapping-the-maze-grupo5/blob/main/comparativa.md
